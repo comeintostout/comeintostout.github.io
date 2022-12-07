@@ -21,9 +21,9 @@ author: Stouter
 
 navbar-links:
   내 소개: "aboutme"
-  # Resources:
-  #   - Beautiful Jekyll: "https://beautifuljekyll.com"
-  #   - Learn markdown: "https://www.markdowntutorial.com/"
+  카테고리:
+    - Backend: ""
+    - Error Notes: ""
   Github: "https://github.com/comeintostout"
 
 ################
@@ -138,11 +138,12 @@ navbar-var-length: false
 
 navbar-col: "#333D51"
 navbar-text-col: "#F4F3EA"
-navbar-border-col: "#D3AC2B"
+# navbar-border-col: "#D3AC2B"
 page-col: "#CBD0D8"
 text-col: "#333D51"
 link-col: "#DE361D"
 hover-col: "#D9561E"
+# hover-col: "#D3AC2B"
 footer-col: "#3D4D62"
 footer-link-col: "#D3AC2B"
 footer-text-col: "#F4F3EA"

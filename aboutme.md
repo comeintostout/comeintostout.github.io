@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About me
+title: 강성준
 subtitle: 배움을 좋아하는 개발자입니다.
 ---
 
@@ -59,7 +59,7 @@ Email. rkdtjdwns916@gmail.com
 
 # Project
 
-### SleepyWoods
+### 팀 오순도순 - [SleepyWoods]
 
 Phaser, Socket 및 WebRTC로 즐기는 웹 기반 소셜 게임 프로젝트
 
