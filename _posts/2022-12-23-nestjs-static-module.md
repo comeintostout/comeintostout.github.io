@@ -6,10 +6,6 @@ tags: [ErrorNote, Nestjs]
 comments: true
 ---
 
-# 개요
-
----
-
 `NestJS`에서는 `dotenv` 등의 외부 라이브러리가 아닌 내장된 `ConfigModule`를 통해 환경 변수를 접근할 수 있도록 해주는데. `.env` 파일을 삽입해두면 하위 모듈에서 이를 `process.env` 식으로 접근하여 환경 변수를 사용할 수 있다.
 
 여기에 `TypeORM`을 연동하려고 다음과 같이 `AppModule` 을 구성했다.
