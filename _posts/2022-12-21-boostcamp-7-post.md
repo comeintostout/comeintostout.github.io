@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 부스트캠프 웹·모바일 7기 회고
+title: 📝 부스트캠프 웹·모바일 7기 회고
 cover-img: /assets/img/2022-12-21/boostcamp_official_logo.png
 thumbnail-img: https://user-images.githubusercontent.com/97016022/209360047-a8ad308e-dd48-4c64-ba09-084107e442bb.JPG
-tags: [회고, 부스트캠프]
+tags: [회고, BoostCamp]
 comments: true
 ---
 
