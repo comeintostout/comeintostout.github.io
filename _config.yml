@@ -209,7 +209,6 @@ footer-hover-col: "#568C54"
 
 # To use Disqus comments, sign up to https://disqus.com and fill in your Disqus shortname (NOT the userid)
 # disqus: ""
-disqus: "beautiful-jekyll"
 
 # To use Facebook Comments, create a Facebook app and fill in the Facebook App ID
 #fb_comment_id: ""
@@ -221,11 +220,19 @@ disqus: "beautiful-jekyll"
 # "repository" (make sure the repository is public), (2) Enable Issues in your repository,
 # (3) Install the Utterances app in your repository https://github.com/apps/utterances
 # See more details about the parameters below at https://utteranc.es/
-#utterances:
-#  repository: # GitHub username/repository eg. "daattali/beautiful-jekyll"
-#  issue-term: title   # Mapping between blog posts and GitHub issues
-#  theme: github-light # Utterances theme
-#  label: blog-comments # Label that will be assigned to GitHub Issues created by Utterances
+utterances:
+  repository: "comeintostout/comeintostout.github.io" # GitHub username/repository eg. "daattali/beautiful-jekyll"
+  issue-term: pathname # Mapping between blog posts and GitHub issues
+  theme: github-light # Utterances theme
+  label: blog-comments # Label that will be assigned to GitHub Issues created by Utterances
+
+# <script src="https://utteranc.es/client.js"
+#         repo="comeintostout/comeintostout.github.io"
+#         issue-term="pathname"
+#         theme="github-light"
+#         crossorigin="anonymous"
+#         async>
+# </script>
 
 # To use Staticman comments, uncomment the following section. You may leave the reCaptcha
 # section commented if you aren't using reCaptcha for spam protection.
