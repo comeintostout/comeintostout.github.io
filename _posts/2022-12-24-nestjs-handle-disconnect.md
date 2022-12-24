@@ -1,7 +1,10 @@
 ---
 layout: post
 title: 💔 Nest.js Socket Server에서 disconnect 감지하기
-thumbnail-img: /assets/img/nestjs_icon.png
+thumbnail-img: /assets/img/socket.io_icon.png
+cover-img: /assets/img/socket.io_icon.png
+gh-repo: boostcampwm-2022/web05-SleepyWoods
+gh-badge: [star, follow]
 tags: [Nestjs, socket]
 comments: true
 ---
