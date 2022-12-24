@@ -96,7 +96,7 @@ export class AppModule {}
 
 <br>
 
-# 모듈은 동적으로 만들자2
+# 모듈을 동적으로 만들자 2
 
 아래의 방식은 `JwtModule`에 환경변수 `JWT_SECRET_KEY`를 주입하다가 알아낸 방식이다.
 

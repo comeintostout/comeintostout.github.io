@@ -11,7 +11,6 @@ subtitle: 배움을 좋아하는 개발자입니다.
 ### Contact
 
 - Email. rkdtjdwns916@gmail.com
-- phone. 010-2899-4421
 
 <br>
 
