@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 🚨 Nest.js 정적 모듈에서의 환경변수 사용
-thumbnail-img: /assets/img/2022-12-23/nestjs_icon.png
+thumbnail-img: /assets/img/nestjs_icon.png
 tags: [ErrorNote, Nestjs]
 comments: true
 ---
