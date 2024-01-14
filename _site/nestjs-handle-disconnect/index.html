@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>[Nestjs] Socket Server에서 disconnect 감지하기 | Stouter's Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[Nestjs] Socket Server에서 disconnect 감지하기 | Stouter’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="[Nestjs] Socket Server에서 disconnect 감지하기" />
+<meta name="author" content="Stouter" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="My review of Inception movie. Acting, plot and something else in this short description." />
+<meta property="og:description" content="My review of Inception movie. Acting, plot and something else in this short description." />
+<link rel="canonical" href="http://localhost:4000/nestjs-handle-disconnect/" />
+<meta property="og:url" content="http://localhost:4000/nestjs-handle-disconnect/" />
+<meta property="og:site_name" content="Stouter’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-12-24T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="[Nestjs] Socket Server에서 disconnect 감지하기" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Stouter"},"dateModified":"2022-12-24T00:00:00+09:00","datePublished":"2022-12-24T00:00:00+09:00","description":"My review of Inception movie. Acting, plot and something else in this short description.","headline":"[Nestjs] Socket Server에서 disconnect 감지하기","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nestjs-handle-disconnect/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Stouter"},"url":"http://localhost:4000/nestjs-handle-disconnect/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logo.png" alt="Stouter's Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Blog</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">Stouter's Blog</h1>
+    <p class="lead">
+        과정을 담는 개발 블로그입니다.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=[Nestjs] Socket Server에서 disconnect 감지하기&url=http://localhost:4000/nestjs-handle-disconnect/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=http://localhost:4000/nestjs-handle-disconnect/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/nestjs-handle-disconnect/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="https://www.gravatar.com/avatar/?s=250&d=mm&r=x" alt="">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href=""></a><a target="_blank" href="" class="btn follow">Follow</a>
+                        <span class="author-description"></span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">[Nestjs] Socket Server에서 disconnect 감지하기</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>부스트캠프에서 팀원들과 <code class="language-plaintext highlighter-rouge">SleepyWoods</code>라는 실시간 WebSocket 서비스를 만들었을 때, <code class="language-plaintext highlighter-rouge">Socket.io</code>를 사용했었다. 이번 글에서는 간단하게 클라이언트의 disconnect를 감지하는 부분을 구현해보자.</p>
+
+<h1 id="handledisconnect">HandleDisconnect</h1>
+
+<hr />
+
+<p>Nest.js에선 Socket Server를 구현할 때, 주로 다음과 같이 <code class="language-plaintext highlighter-rouge">SocketGateWay</code>를 구성한다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="k">export</span> <span class="kd">class</span> <span class="nc">SocketGateway</span> <span class="k">implements</span> <span class="nx">OnGatewayConnection</span><span class="p">,</span> <span class="nx">OnGatewayDisconnect</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">WebSocketServer</span><span class="p">()</span>
+  <span class="nx">server</span><span class="p">:</span> <span class="nx">Server</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="nf">handleConnection</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// 클라이언트가 접속되었을 때, 할 일</span>
+  <span class="p">}</span>
+
+  <span class="k">public</span> <span class="nf">handleDisconnect</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// 클라이언트가 접속 해제되었을 때, 할 일</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">SocketGateway</code>는 <code class="language-plaintext highlighter-rouge">OnGatewayConnection</code>와 <code class="language-plaintext highlighter-rouge">OnGatewayDisconnect</code>를 상속함으로써, 필수적으로 <code class="language-plaintext highlighter-rouge">handleConnection</code>과 <code class="language-plaintext highlighter-rouge">handleDisconnect</code>를 메소드로 지니게 된다.</p>
+
+<p>여기서 클라이언트가 일반적인 접속 해제를 할 경우 대부분은 <code class="language-plaintext highlighter-rouge">handleDisconnect</code>로 이를 감지하고, 처리해줄 수 있다.</p>
+
+<p><br /></p>
+
+<h1 id="handledisconnect는-모든-disconnect을-감지할까">HandleDisconnect는 모든 disconnect을 감지할까?</h1>
+
+<hr />
+
+<p>같이 Socket Server를 구성하던 피어와 실험해본 결과, <code class="language-plaintext highlighter-rouge">handleDisconnect</code>는 모든 disconnect를 감지하지 못한다. 다음과 같은 예외 상황이 있을 수 있다.</p>
+
+<p><strong>⚠️ 클라이언트가 비정상적인 종료를 했을 경우</strong></p>
+
+<ul>
+  <li>브라우저의 강제 종료가 일어났을 때,</li>
+  <li>노트북의 배터리가 다 되어 노트북 자체가 강제 종료 되었을 때,</li>
+</ul>
+
+<p>위의 상황 말고도, 우리가 테스트해보지 못한 많은 예외 상황들이 있을 수 있다. 만약 disconnect를 감지하지 않아도 되는 서비스라면 모르겠지만, 우리 서비스에선 disconnect 시에 필수적인 로직이 있어 이 점이 중요했다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">public</span> <span class="nf">handleDisconnect</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">sleepySocket</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// 다른 유저들에게 해당 유저가 로그아웃 했다는 정보 전달</span>
+    <span class="c1">// 해당 유저의 그 날의 활동량을 기록</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="pinginterval과-pingtimeout">PingInterval과 pingTimeout</h1>
+
+<hr />
+
+<p>Nest.js 에서 <code class="language-plaintext highlighter-rouge">SocketGateway</code>를 구성할때, <code class="language-plaintext highlighter-rouge">@WebSocketGateway</code> 데코레이터를 통해, WebSocket에 option값을 넣어줄 수 있다. 다음과 같이 <code class="language-plaintext highlighter-rouge">SocketGateway</code>를 수정했다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="p">@</span><span class="nd">WebSocketGateway</span><span class="p">({</span>
+  <span class="na">pingInterval</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+  <span class="na">pingTimeout</span><span class="p">:</span> <span class="mi">3000</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">SocketGateway</span> <span class="k">implements</span> <span class="nx">OnGatewayConnection</span><span class="p">,</span> <span class="nx">OnGatewayDisconnect</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">WebSocketServer</span><span class="p">()</span>
+  <span class="nx">server</span><span class="p">:</span> <span class="nx">Server</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="nf">handleConnection</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// 클라이언트가 접속되었을 때, 할 일</span>
+  <span class="p">}</span>
+
+  <span class="k">public</span> <span class="nf">handleDisconnect</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// 클라이언트가 접속 해제되었을 때, 할 일</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>위의 두 가지 option들을 통해 heartbeat를 설정할 수 있는데, 이는 connection이 유효한 지 주기적으로 확인하는 과정이라 볼 수 있다.</p>
+
+<p>서버는 <code class="language-plaintext highlighter-rouge">pingInterval</code>마다 connection을 확인하고, 마지막 요청으로부터 <code class="language-plaintext highlighter-rouge">pingTimeout</code> 시간 동안 응답이 없다면 클라이언트가 죽은 것으로 판단 해 disconnect 시킨다.
+(위의 예시에서는 5초마다 확인을 하며, 마지막 요청에서 3초간 응답이 없었으면 연결이 해제되었다고 판단한다.)</p>
+
+<p>이를 통해 클라이언트가 예기치 못한 접속 종료를 하더라도, 서버에서 이를 잡아낼 수 있다.</p>
+
+<p>아래의 <code class="language-plaintext highlighter-rouge">Socket.io</code> 도큐먼트에서 조금 더 자세한 정보를 확인할 수 있다.</p>
+
+<p><br /></p>
+
+<h1 id="참조">참조</h1>
+
+<hr />
+
+<p><a href="https://socket.io/docs/v4/server-options/">Server options</a></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2022-12-24">24 Dec 2022</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Nestjs">Nestjs</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Socket">Socket</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/tags#Nestjs">#Nestjs</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/tags#Socket">#Socket</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="//nestjs-static-module/"> &laquo; [Nestjs] 정적 모듈에서의 환경변수 사용</a>
+            
+            
+            <a class="next d-block col-md-6 text-lg-right" href="//selenium-crawling/">Selenium을 이용한 동적 크롤링 &raquo; </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+    <div class="container">
+        <div id="comments" class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = ''; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+            </div>
+        </div>
+    </div>
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#회고">회고 (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Trouble-Shooting">Trouble Shooting (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Nestjs">Nestjs (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Socket">Socket (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Crawling">Crawling (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Selenium">Selenium (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                Copyright © 2024 Stouter's Blog 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+<script src="/assets/js/lazyload.js"></script>
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+</body>
+</html>

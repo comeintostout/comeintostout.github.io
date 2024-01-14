@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Selenium을 이용한 동적 크롤링 | Stouter's Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Selenium을 이용한 동적 크롤링 | Stouter’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Selenium을 이용한 동적 크롤링" />
+<meta name="author" content="Stouter" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="회사에서 필요한 데이터를 수집 및 가공하는 과정에서 python으로 크롤링을 하게된 적이 있었다. 이 때 다양한 문제들을 접할 수 있었는데, 그 과정에서 얻어낸 정보들을 정리하기로 결심했다." />
+<meta property="og:description" content="회사에서 필요한 데이터를 수집 및 가공하는 과정에서 python으로 크롤링을 하게된 적이 있었다. 이 때 다양한 문제들을 접할 수 있었는데, 그 과정에서 얻어낸 정보들을 정리하기로 결심했다." />
+<link rel="canonical" href="http://localhost:4000/selenium-crawling/" />
+<meta property="og:url" content="http://localhost:4000/selenium-crawling/" />
+<meta property="og:site_name" content="Stouter’s Blog" />
+<meta property="og:image" content="http://localhost:4000/assets/images/2023-01-15/selenium_logo.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-15T00:00:00+09:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/images/2023-01-15/selenium_logo.webp" />
+<meta property="twitter:title" content="Selenium을 이용한 동적 크롤링" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Stouter"},"dateModified":"2023-01-15T00:00:00+09:00","datePublished":"2023-01-15T00:00:00+09:00","description":"회사에서 필요한 데이터를 수집 및 가공하는 과정에서 python으로 크롤링을 하게된 적이 있었다. 이 때 다양한 문제들을 접할 수 있었는데, 그 과정에서 얻어낸 정보들을 정리하기로 결심했다.","headline":"Selenium을 이용한 동적 크롤링","image":"http://localhost:4000/assets/images/2023-01-15/selenium_logo.webp","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/selenium-crawling/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Stouter"},"url":"http://localhost:4000/selenium-crawling/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logo.png" alt="Stouter's Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Blog</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">Stouter's Blog</h1>
+    <p class="lead">
+        과정을 담는 개발 블로그입니다.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Selenium을 이용한 동적 크롤링&url=http://localhost:4000/selenium-crawling/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=http://localhost:4000/selenium-crawling/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/selenium-crawling/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="https://www.gravatar.com/avatar/?s=250&d=mm&r=x" alt="">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href=""></a><a target="_blank" href="" class="btn follow">Follow</a>
+                        <span class="author-description"></span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Selenium을 이용한 동적 크롤링</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid lazyimg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII=" data-src="/assets/images/2023-01-15/selenium_logo.webp" alt="Selenium을 이용한 동적 크롤링">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>회사에서 필요한 데이터를 수집 및 가공하는 과정에서 python으로 크롤링을 하게된 적이 있었다. 이 때 다양한 문제들을 접할 수 있었는데, 그 과정에서 얻어낸 정보들을 정리하기로 결심했다.</p>
+
+<blockquote>
+  <p>⚠️ 해당 사이트가 정보 수집에 관하여 열려있는 지 우선 확인하자. robots.txt를 참조하면 해당 사이트의 정책 및 권한을 확인할 수 있다. 또한 잦은 크롤링은 해당 서비스에 부하를 줄 수 있으므로 내가 찾으려는 정보가 API 식으로 제공이 되는 지 또한 확인해보자.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h1 id="크롤링-준비">크롤링 준비</h1>
+
+<p>크롤링을 하기 전에 환경을 먼저 구성하자. 본인의 크롤링 상황에 적합한 라이브러리를 선택하고 확장성을 고려하자.</p>
+
+<p><br /></p>
+
+<h2 id="가상-환경-vs-로컬">가상 환경 VS 로컬</h2>
+
+<hr />
+
+<p>반드시 가상 환경에서 크롤링을 진행할 필요는 없다. 그렇지만 필자는 다음과 같은 이유로 크롤링을 위한 가상 환경을 준비한다.</p>
+
+<ul>
+  <li>크롤링을 하는 동안, 다른 작업을 하기 껄끄러울 수 있다.
+    <ul>
+      <li>이전에 처리해야할 데이터가 너무 많아 로컬에서 <code class="language-plaintext highlighter-rouge">Multi-Processing</code>을 진행했더니, 다른 작업을 하기 어려웠다.</li>
+    </ul>
+  </li>
+  <li>프로젝트 의존성 같은 걸 고려하지 않아도 된다.
+    <ul>
+      <li>혹 나 말고도 다른 팀원들이 사용할 코드라면, 가상 환경에 프로젝트를 설정해두는 것이 사용에 편리할 수 있다.</li>
+    </ul>
+  </li>
+  <li><del>혹 접근이 차단될 수도 있다…</del></li>
+</ul>
+
+<p>필자는 여러 크롤링 과정에서 다음과 같은 도구들을 활용했다.</p>
+
+<ul>
+  <li>Google Colab
+    <ul>
+      <li>구글에서 제공하는 도구로 <code class="language-plaintext highlighter-rouge">Jupyter Notebook</code> 실행을 위한 가상 환경을 제공한다. 무료로 이용할 수 있으며 약간 불편한 점도 있으나, 본인의 프로젝트가 간단한 것이라면 <code class="language-plaintext highlighter-rouge">Colab</code> 또한 좋은 접근성과 편리성을 제공한다.</li>
+    </ul>
+  </li>
+  <li>Cloud Server
+    <ul>
+      <li>마침 Naver Cloud에 남은 credit이 있어 서버 인스턴스를 열어 크롤링을 한 적이 있다. 당시에 시간 요금제로 짧고 굵게 크롤링을 할 수 있었다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="selenium">Selenium</h2>
+
+<hr />
+
+<p>크롤링 방법들을 찾아보다 보면 매우 자주 보이는 라이브러리이다. <code class="language-plaintext highlighter-rouge">Selenium</code>은 웹 어플리케이션을 테스트하기 위한 자동화 도구라고 한다. 그렇지만 크롤링에 있어 매우 유용한 라이브러리다.</p>
+
+<p><br /></p>
+
+<h3 id="selenium의-필요성">Selenium의 필요성</h3>
+
+<p>만약 크롤링하려는 페이지가 단순히 정적 HTML을 제공한다던가, 내가 원하는 정보가 해당 페이지의 HTML에 직접적으로 적혀 있다면 <code class="language-plaintext highlighter-rouge">Selenium</code>을 사용할 필요가 없다. 그렇다면 <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> 과 같은 HTML Parsing 라이브러리를 통해 더 쉽고 빠르게 정보를 가져올 수 있다.</p>
+
+<p>그치만 대부분의 경우엔 내가 수집하려는 정보가 비동기로 호출되거나, 특정 인터랙션을 통해 생성되는 정보일 것이다. 그렇다면 단순히 해당 페이지의 HTML을 가져오는 것으로는 정보를 추출할 수 없다.</p>
+
+<p>이럴 때 사용되는 라이브러리가 <code class="language-plaintext highlighter-rouge">Selenium</code>이며, <code class="language-plaintext highlighter-rouge">Selenium</code>을 통해 브라우저를 마치 내가 직접 사이트를 이용하는 것 처럼 인간적이게(?) 크롤링을 시킬 수 있다.</p>
+
+<p><br /></p>
+
+<h3 id="selenium-준비">Selenium 준비</h3>
+
+<p>우선 <code class="language-plaintext highlighter-rouge">Selenium</code>으로 구동시킬 브라우저를 준비하자. 나는 이번 프로젝트에 Chrome 브라우저를 사용했으며, 해당 브라우저를 구동시킬 드라이버 또한 다운 받았다. 브라우저 버전과 드라이버의 버전이 일치해야 한다.</p>
+
+<ul>
+  <li>Chrome 버전 확인
+    <ul>
+      <li>Chrome → 설정 → Chrome 정보 탭</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="../assets/images/2023-01-15/chrome.png" alt="chrome" /></p>
+
+<ul>
+  <li>Chrome 드라이버 다운
+<a href="https://chromedriver.chromium.org/downloads">ChromeDriver - WebDriver for Chrome - Downloads</a>
+프로젝트의 폴더에 해당 드라이버를 넣어주자</li>
+</ul>
+
+<p>pip를 통해 python에서 <code class="language-plaintext highlighter-rouge">Selenium</code>을 쓸 수 있도록 설치하자</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Selenium</code> 설치
+<code class="language-plaintext highlighter-rouge">pip install Selenium</code></li>
+</ul>
+
+<p><br />
+<br /></p>
+
+<h1 id="크롤링-시작">크롤링 시작</h1>
+
+<p>준비를 마쳤다면 본격적으로 크롤링을 시작해보자.</p>
+
+<h2 id="selenium-시작">Selenium 시작</h2>
+
+<hr />
+
+<p>우선 <code class="language-plaintext highlighter-rouge">Selenium</code>으로 브라우저를 구동 시켜보자. 확장성을 고려하여 함수를 선언해 호출하자. 모든 코드는 python으로 작성되었다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+
+<span class="k">def</span> <span class="nf">openBrowser</span><span class="p">():</span>
+  <span class="n">driverOptions</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">ChromeOptions</span><span class="p">()</span>
+  <span class="c1"># driverOptions.add_argument('headless') # 브라우저를 띄우지 않고 실행. linux라면 필수.
+</span>  <span class="c1"># driverOptions.add_argument('disable-gpu') # GPU 사용 안하도록 설정
+</span>  <span class="c1"># driverOptions.add_argument('--no-sandbox')
+</span>  <span class="n">driverOptions</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">lang=ko_KR</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 언어 설정
+</span>  <span class="n">driverOptions</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--disable-dev-shm-usage</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 공유 메모리를 담당하는 디렉토리를 사용하지 않겠다는 의미이다.
+</span>  <span class="n">driverOptions</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">window-size=1920,1080</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 브라우저의 크기를 설정
+</span>  <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">Chrome</span><span class="p">(</span><span class="sh">'</span><span class="s">chromedriver</span><span class="sh">'</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">driverOptions</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">driver</span>
+
+<span class="k">def</span> <span class="nf">crawling</span><span class="p">():</span>
+  <span class="n">driver</span> <span class="o">=</span> <span class="nf">openBrowser</span><span class="p">()</span>
+  <span class="p">.</span>
+  <span class="p">.</span>
+  <span class="p">.</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+<span class="nf">crawling</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>주석을 친 부분은 <code class="language-plaintext highlighter-rouge">headless</code> 모드로 구동시킬 때 필요한 option들이다. Linux와 같은 환경에서는 GUI를 지원하지 않기 때문에 <code class="language-plaintext highlighter-rouge">headless</code> 모드로 해줘야 한다. <code class="language-plaintext highlighter-rouge">headless</code> 모드를 사용하면 백그라운드로 실행되기 때문에 다른 작업과 병행할 수 있다. 그치만 내가 느낀 <code class="language-plaintext highlighter-rouge">headless</code> 모드의 단점 또한 있기 때문에 나는 되도록 <code class="language-plaintext highlighter-rouge">headless</code> 모드를 지양한다. 이는 아래에서 따로 설명하겠다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">driver.close()</code> 를 통해 driver를 종료할 수 있는데, 프로그램이 다 끝났다면 무조건 해주자. 컴퓨터에 종료되지 않은 chrome 들이 리소스를 잡아먹고 있을 수 있다.</p>
+
+<p><br /></p>
+
+<h3 id="페이지-접근">페이지 접근</h3>
+
+<p>위에서 설정해준대로 코드를 돌리면 브라우저가 잠깐 켜졌다가 꺼질 것이다. (아직 구현한 코드가 없어서)
+크롤링하는 페이지에 접근하려면 다음과 같이 하면 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">crawling</span><span class="p">():</span>
+  <span class="n">driver</span> <span class="o">=</span> <span class="nf">openBrowser</span><span class="p">()</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">implicitly_wait</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+  <span class="p">.</span>
+  <span class="p">.</span>
+  <span class="p">.</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">driver.get(url)</code>
+    <ul>
+      <li>브라우저를 해당 url에 접근하도록 한다.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">driver.implicitly_wait(sec)</code>
+    <ul>
+      <li>브라우저를 해당 페이지로 이동 시킨 후, 페이지가 로딩될 때 까지 최대 <code class="language-plaintext highlighter-rouge">sec</code>(초) 만큼 기다린다.</li>
+      <li>해당 페이지에 접근하자마자 요소를 긁어오려 한다면 아직 정보가 다 불려오지 않아 실패할 수 있다. 비동기 정보들을 올바르게 가져오기 위해선 꼭 위와 같이 기다려주자.</li>
+      <li>다양한 종류의 <code class="language-plaintext highlighter-rouge">wait</code>들이 존재한다. <code class="language-plaintext highlighter-rouge">implicitly_wait()</code> 은 유연한 <code class="language-plaintext highlighter-rouge">wait</code>을 제공하여 비교적 좋은 성능을 낼 수 있다.</li>
+      <li>한 번만 선언해도 모든 브라우저의 동작에 적용된다. 중복해서 사용하지 않아도 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="해당-페이지에서-찾으려는-요소-탐색">해당 페이지에서 찾으려는 요소 탐색</h3>
+
+<p>개발자모드를 켜서 찾으려는 요소의 <code class="language-plaintext highlighter-rouge">ID</code>, <code class="language-plaintext highlighter-rouge">CLASS</code>, <code class="language-plaintext highlighter-rouge">XPATH</code> 등을 찾아오자. 본인이 가져오려는 정보에 맞춰 적절한 방식을 취하자. 탐색은 다음과 같이 구현된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+
+<span class="k">def</span> <span class="nf">crawling</span><span class="p">():</span>
+  <span class="n">driver</span> <span class="o">=</span> <span class="nf">openBrowser</span><span class="p">()</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">implicitly_wait</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+  <span class="n">targetList</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="nf">find_elements</span><span class="p">(</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span><span class="sh">"</span><span class="s">클래스 이름</span><span class="sh">"</span><span class="p">)</span>
+  <span class="c1"># targetList = driver.find_elements(By.ID,"ID 이름")
+</span>  <span class="c1"># targetList = driver.find_elements(By.TAG_NAME,"태그 이름")
+</span>  <span class="c1"># targetList = driver.find_elements(By.XPATH,"XPATH")
+</span>
+  <span class="n">driver</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">find_elements()</code>는 조건에 맞는 모든 요소들을 배열 형식으로 가져온다. 따라서 특정 Link를 불러오려고 할 때, <code class="language-plaintext highlighter-rouge">find_elements(By.TAG_NAME, “a”)</code> 와 같은 식으로 하다간 해당 페이지의 모든 <code class="language-plaintext highlighter-rouge">a</code> 태그를 불러올 것이다.</p>
+
+<p>조금 더 구체적인 방식으로 원하는 요소만 골라보자. <code class="language-plaintext highlighter-rouge">XPATH</code>를 활용해도 되고 다음과 같이 여러번 물려서 사용할 수도 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">target</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="nf">find_element</span><span class="p">(</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span><span class="sh">"</span><span class="s">클래스 이름</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 예시를 위해 find_element를 통해 하나만 불러왔다.
+</span><span class="n">link</span> <span class="o">=</span> <span class="n">target</span><span class="p">.</span><span class="nf">find_element</span><span class="p">(</span><span class="n">By</span><span class="p">.</span><span class="n">TAG_NAME</span><span class="p">,</span> <span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">).</span><span class="nf">get_attribute</span><span class="p">(</span><span class="sh">"</span><span class="s">href</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>target의 하위 요소들을 탐색하여 <code class="language-plaintext highlighter-rouge">a</code> 태그 요소를 찾고, 해당 요소의 <code class="language-plaintext highlighter-rouge">href</code> 속성값을 불러와 원하는 link를 불러올 수 있다.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">Selenium</code>의 문법은 구글링하면 잘 나와있다. 참고해보자.</p>
+
+<p><br />
+<br /></p>
+
+<h1 id="multi-processing">Multi-Processing</h1>
+
+<p>사실 <code class="language-plaintext highlighter-rouge">Multi-Processing</code> 까지 해야할 필요는 없을 수 있다. 그러나 회사 규모의 큰 집단에서 다루는 데이터들은 보통 양이 많다. 이전에 받은 크롤링 업무에서 처리해야할 데이터가 약 2만 개 정도였다. <code class="language-plaintext highlighter-rouge">Selenium</code> 으로 페이지 이동을 하면서 한 데이터를 처리하는데 10~30초 정도 걸렸는데, 싱글 쓰레드로 2만 개 정도를 계산해보니 950 시간 정도가 걸렸던 것 같다. <code class="language-plaintext highlighter-rouge">Multi-Processing</code>이 간절히 필요했다</p>
+
+<p><br /></p>
+
+<h2 id="multiprocessing">multiprocessing</h2>
+
+<hr />
+
+<p>파이썬에선 <code class="language-plaintext highlighter-rouge">multiprocessing</code> 라이브러리가 있으며 다음과 같이 쉽게 일을 분배할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">multiprocessing</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+  <span class="n">works</span> <span class="o">=</span> <span class="nf">get_count</span><span class="p">(</span><span class="sh">"</span><span class="s">처리할 데이터 수</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">쓰레드 수</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 전체 데이터를 쓰레드 수에 맞게 분배
+</span>
+  <span class="n">manager</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="nc">Manager</span><span class="p">()</span> <span class="c1"># 쓰레드간 메모리 공유를 위한 manager
+</span>  <span class="n">returnList</span> <span class="o">=</span> <span class="n">manager</span><span class="p">.</span><span class="nf">list</span><span class="p">()</span> <span class="c1"># 각 쓰레드가 각자한 일을 returnList에 append
+</span>
+  <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">works</span><span class="p">:</span> <span class="c1"># crawling 함수를 수행할 process 생성
+</span>    <span class="n">p</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="nc">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">crawling</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">returnList</span><span class="p">))</span>
+    <span class="n">process</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">p</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span> <span class="c1"># process 시작
+</span>
+  <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">process</span><span class="p">:</span>
+    <span class="n">p</span><span class="p">.</span><span class="nf">join</span><span class="p">()</span> <span class="c1"># process가 종료될 때 까지 기다린다. 해주지 않고 프로그램이 종료되면 좀비 프로세스가 생길 수 있다.
+</span>	<span class="p">.</span>
+	<span class="p">.</span>
+	<span class="p">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">if __name__ == ‘__main__’:</code> 은 뭘까?</p>
+
+<p>찾아봤더니 파이썬에서는 각 프로세스들이 내부적으로 <code class="language-plaintext highlighter-rouge">__name__</code> 값을 갖는다. 즉 우리가 실행시킨 메인 프로그램은 <code class="language-plaintext highlighter-rouge">__name__</code> 값으로 <code class="language-plaintext highlighter-rouge">__main__</code> 값을 가지나, 그로 인해 생성된 자식 프로세스들은 <code class="language-plaintext highlighter-rouge">__name__ == ‘__main__’</code> 가 False가 된다. 자식 프로세스들이 process를 무한정으로 재생산 하면 안되므로 위와 같이 보호(?) 해주자.</p>
+
+<p>본인의 크롤링 작업과 환경에 맞게 알맞게 <code class="language-plaintext highlighter-rouge">multi-processing</code>을 해주자!
+필자는 8개의 쓰레드 까지는 효율이 잘 나왔으나, 16개로 쓰레드를 올리니 효율이 극 나빠졌다.</p>
+
+<ul>
+  <li>16 works / 8 workers : 4분 * 2 = 8분</li>
+  <li>16 works / 16 workers : 12분</li>
+</ul>
+
+<p>학교에서 C로 <code class="language-plaintext highlighter-rouge">multi-processing</code> 프로젝트를 했을 때는 32, 64개 정도의 worker process들을 생성하는 것이 sweet spot이었던 것 같은데, 네트워크 탓인지 <code class="language-plaintext highlighter-rouge">Selenium</code>이나 chrome의 탓인지 8개가 최고효율이었다.</p>
+
+<p>그렇게 window server를 4개 파서 약 2만 개의 데이터를 660분 정도에 처리할 수 있었다.</p>
+
+<p>950 시간 → 11 시간</p>
+
+<p><br />
+<br /></p>
+
+<h1 id="트러블-슈팅">트러블 슈팅</h1>
+
+<p>크롤링을 하면서 다양한 이슈들이 있었다. Google에 은근 <code class="language-plaintext highlighter-rouge">Selenium</code>에 관한 정보들이 파편화 되어 있고 명확하게 없어서 기록해보기로 했다.</p>
+
+<p><br /></p>
+
+<h2 id="분명-개발자-도구에서는-보이는-데-find-가-안될-때-1--iframe">분명 개발자 도구에서는 보이는 데 find 가 안될 때 1 : iframe</h2>
+
+<hr />
+
+<p>네이버 카페에 필요한 데이터가 있어 크롤링한 적이 있다. 게시글 목록을 불러오려 했는데 자꾸 빈 배열이 반환되었다.</p>
+
+<p>내가 요소를 잘못 검색한 것인가 해서 <code class="language-plaintext highlighter-rouge">find_elements()</code> 로 상위 요소들을 한 depth씩 타고 올라갔다. 그러자 특정 부분에 변곡점(?)이 있었는데, 그게 <code class="language-plaintext highlighter-rouge">iframe</code> 태그였다.</p>
+
+<p><br /></p>
+
+<h3 id="iframe-이란">iframe 이란?</h3>
+
+<p><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/iframe">MDN : 인라인 프레임 요소</a></p>
+
+<p>현재의 HTML 내에 다른 HTML 페이지를 <code class="language-plaintext highlighter-rouge">inline</code>으로 삽입할 수 있도록 도와주는 Tag이다.</p>
+
+<p>네이버 카페의 게시글 목록 부분은 iframe 태그로 다른 HTML을 불러와 내장시킨 구조였다. 즉 해당 부분은 다른 페이지라고 볼 수 있는 것이다.</p>
+
+<p><br /></p>
+
+<h3 id="selenium에서-iframe-페이지를-접근-하는-법">Selenium에서 iframe 페이지를 접근 하는 법</h3>
+
+<p>다음과 같이 <code class="language-plaintext highlighter-rouge">iframe</code> 페이지에 driver를 접근시킬 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">switchToIframeById</span><span class="p">(</span><span class="n">iframeId</span><span class="p">):</span>
+  <span class="n">iframe</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="nf">find_element</span><span class="p">(</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">iframeId</span><span class="p">)</span>
+  <span class="n">driver</span><span class="p">.</span><span class="n">switch_to</span><span class="p">.</span><span class="nf">frame</span><span class="p">(</span><span class="n">iframe</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>이 후 driver에서 <code class="language-plaintext highlighter-rouge">find_elements()</code> 를 통해 하위 요소들을 탐색할 수 있다.</p>
+
+<p><br /></p>
+
+<h2 id="분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size">분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size</h2>
+
+<hr />
+
+<p>네이버 호텔 페이지에서 <code class="language-plaintext highlighter-rouge">Selenium</code>을 써본 적이 있었다.</p>
+
+<p><img src="../assets/images/2023-01-15/naver_hotel.png" alt="naver hotel" /></p>
+
+<ol>
+  <li>원하는 호텔과 날짜를 선택하여 검색한 후</li>
+  <li>가격 비교 탭의 회사별 상품 목록들을 보고</li>
+  <li>예약 버튼을 누르도록</li>
+</ol>
+
+<p>했는데 예약 버튼이 눌리지 않았다. 개발자 도구에서도 보이고 내 눈에도 보이는 데 <code class="language-plaintext highlighter-rouge">Selenium</code>이 이를 가져오지 못했다. 혹시 <code class="language-plaintext highlighter-rouge">Selenium</code> 탓인가 해서 <code class="language-plaintext highlighter-rouge">BeautifulSoup</code>을 통해 시도했는데, 이 또한 실패했다.</p>
+
+<p>이걸로 1,2 시간은 삽질했으려나, 개발자 도구를 아래에서 옆으로 옮기다가 답을 알아냈다.</p>
+
+<p><img src="../assets/images/2023-01-15/naver_hotel_developer_tools_small.png" alt="small" /></p>
+
+<p>개발자 도구를 더 늘렸더니 예약 버튼이 사라졌다.</p>
+
+<p><img src="../assets/images/2023-01-15/naver_hotel_developer_tools_wide.png" alt="wide" /></p>
+
+<p>네이버 호텔 페이지의 예약 버튼은 반응형으로 페이지의 크기에 따라 생성되는 방식이었나보다. 즉 브라우저가 작게 띄워져 있거나 <code class="language-plaintext highlighter-rouge">headless</code> 모드로 실행되었다면 해당 요소를 찾을 수 없다.</p>
+
+<p><br /></p>
+
+<h3 id="selenium의-브라우저-크기-조절">Selenium의 브라우저 크기 조절</h3>
+
+<p>아까의 driver options들을 보자</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+
+<span class="k">def</span> <span class="nf">openBrowser</span><span class="p">():</span>
+  <span class="n">driverOptions</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">ChromeOptions</span><span class="p">()</span>
+  <span class="c1"># driverOptions.add_argument('headless') # 브라우저를 띄우지 않고 실행. linux라면 필수.
+</span>  <span class="c1"># driverOptions.add_argument('disable-gpu') # GPU 사용 안하도록 설정
+</span>  <span class="c1"># driverOptions.add_argument('--no-sandbox') # 공유 메모리를 담당하는 디렉토리를 사용하지 않겠다는 의미이다.
+</span>  <span class="n">driverOptions</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">lang=ko_KR</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 언어 설정
+</span>  <span class="n">driverOptions</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--disable-dev-shm-usage</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 공유 메모리를 담당하는 디렉토리를 사용하지 않겠다는 의미이다.
+</span>  <span class="n">driverOptions</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">window-size=1920,1080</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 브라우저의 크기를 설정
+</span>  <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">Chrome</span><span class="p">(</span><span class="sh">'</span><span class="s">chromedriver</span><span class="sh">'</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">driverOptions</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">driver</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>글 앞 부분에서 나는 되도록 <code class="language-plaintext highlighter-rouge">headless</code>를 지양한다고 했는데, 이는 이런 이유에서였다. 만약 <code class="language-plaintext highlighter-rouge">headless</code>를 해서 잘 나온다면 상관없지만, <del>잘 안된다면 <code class="language-plaintext highlighter-rouge">headless</code> 모드를 해제하고</del> <code class="language-plaintext highlighter-rouge">window-size</code>를 조절해보자.</p>
+
+<blockquote>
+  <p><b>🔧 headless 모드여도 window-size를 조절하면 위와 같은 상황에서 원하는 요소에 접근할 수 있다고 한다. </b></p>
+</blockquote>
+
+<p><strong>다양한 크기 조절 options</strong></p>
+
+<ul>
+  <li>크기 지정
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">add_argument('--window-size= x, y')</code></li>
+    </ul>
+  </li>
+  <li>최대화
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">add_argument('--start-maximized')</code></li>
+    </ul>
+  </li>
+  <li>풀스크린 (F11)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">add_argument('--start-fullscreen')</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br />
+<br /></p>
+
+<h1 id="참조">참조</h1>
+
+<hr />
+
+<p><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/iframe">MDN : 인라인 프레임 요소</a></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2023-01-15">15 Jan 2023</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Crawling">Crawling</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Selenium">Selenium</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/tags#Crawling">#Crawling</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/tags#Selenium">#Selenium</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="//nestjs-handle-disconnect/"> &laquo; [Nestjs] Socket Server에서 disconnect 감지하기</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+    <div class="container">
+        <div id="comments" class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = ''; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+            </div>
+        </div>
+    </div>
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#회고">회고 (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Trouble-Shooting">Trouble Shooting (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Nestjs">Nestjs (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Socket">Socket (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Crawling">Crawling (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Selenium">Selenium (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                Copyright © 2024 Stouter's Blog 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+<script src="/assets/js/lazyload.js"></script>
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+</body>
+</html>
