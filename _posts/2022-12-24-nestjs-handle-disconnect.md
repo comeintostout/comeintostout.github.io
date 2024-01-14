@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[Nestjs] Socket Server에서 disconnect 감지하기"
-author: Stouter
+author: stouter
 categories: [Nestjs, Socket]
 tags: [Nestjs, Socket]
 #image: assets/images/11.jpg

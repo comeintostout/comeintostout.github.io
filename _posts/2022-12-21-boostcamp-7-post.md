@@ -1,12 +1,12 @@
 ---
 layout: post
 title:  "부스트캠프 웹·모바일 7기 회고"
-author: Stouter
+author: stouter
 categories: [회고]
 tags: [회고, BoostCamp]
 image: assets/images/2022-12-21/membership_mail.png
-featured: false
-hidden: false
+featured: true
+hidden: true
 #rating: 4.5
 comments: true
 ---

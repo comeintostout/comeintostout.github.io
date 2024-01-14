@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[Nestjs] 정적 모듈에서의 환경변수 사용"
-author: Stouter
+author: stouter
 categories: [Trouble Shooting, Nestjs]
 tags: [Trouble Shooting, Nestjs]
 #image: assets/images/11.jpg

@@ -1,12 +1,12 @@
 ---
 layout: post
 title:  "Selenium을 이용한 동적 크롤링"
-author: Stouter
+author: stouter
 categories: [Crawling, Selenium]
 tags: [Crawling, Selenium]
 image: assets/images/2023-01-15/selenium_logo.webp
-featured: false
-hidden: false
+featured: true
+hidden: true
 #rating: 4.5
 comments: true
 ---
