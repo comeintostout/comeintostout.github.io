@@ -8,6 +8,7 @@ tags: [Trouble Shooting, Nestjs]
 featured: false
 hidden: false
 comments: true
+toc: true
 ---
 
 `NestJS`에서는 `dotenv` 등의 외부 라이브러리가 아닌 내장된 `ConfigModule`를 통해 환경 변수를 접근할 수 있도록 해주는데. `.env` 파일을 삽입해두면 하위 모듈에서 이를 `process.env` 식으로 접근하여 환경 변수를 사용할 수 있다.

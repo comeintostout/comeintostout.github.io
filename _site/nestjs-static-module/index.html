@@ -142,6 +142,20 @@
     <!-- Begin Article
 ================================================== -->
 <div class="container">
+    <!-- Toc if any -->
+    
+        
+        <div class="toc mt-4 mb-4 lead">
+            <h6 class="font-weight-bold">Summary</h6>
+            <ul>
+  <li><a href="#모듈을-동적으로-만들자">모듈을 동적으로 만들자</a></li>
+  <li><a href="#모듈을-동적으로-만들자-2">모듈을 동적으로 만들자 2</a></li>
+  <li><a href="#개선점">개선점</a></li>
+  <li><a href="#참조">참조</a></li>
+</ul>
+        </div>
+    
+    <!-- End Toc -->
     <div class="row">
 
         <!-- Post Share -->
@@ -219,9 +233,6 @@
 
             <!-- Post Content -->
             <div class="article-post">
-                <!-- Toc if any -->
-                
-                <!-- End Toc -->
                 <p><code class="language-plaintext highlighter-rouge">NestJS</code>에서는 <code class="language-plaintext highlighter-rouge">dotenv</code> 등의 외부 라이브러리가 아닌 내장된 <code class="language-plaintext highlighter-rouge">ConfigModule</code>를 통해 환경 변수를 접근할 수 있도록 해주는데. <code class="language-plaintext highlighter-rouge">.env</code> 파일을 삽입해두면 하위 모듈에서 이를 <code class="language-plaintext highlighter-rouge">process.env</code> 식으로 접근하여 환경 변수를 사용할 수 있다.</p>
 
 <p>여기에 <code class="language-plaintext highlighter-rouge">TypeORM</code>을 연동하려고 다음과 같이 <code class="language-plaintext highlighter-rouge">AppModule</code> 을 구성했다.</p>
@@ -436,17 +447,6 @@ export class AppModule <span class="si">{}</span>
 <p><a href="https://velog.io/@kakasoo/Nest%EC%97%90%EC%84%9C-ConfigModule-TypeORM-%EC%93%B0%EA%B8%B0">Nest.js에 ConfigModule 설정</a></p>
 
             </div>
-            <!-- Hit Count -->
-            <div style="text-align: center;">
-                <a
-                        href="http://hits.dwyl.com/comeintostout/localhost:4000/nestjs-static-module/?style=flat-square"
-                        target="_blank"
-                >
-                    <img
-                            src="http://hits.dwyl.com/comeintostout/localhost:4000/nestjs-static-module/.svg?style=flat-square"
-                    />
-                </a>
-            </div>
 
             <!-- Rating -->
             
@@ -509,6 +509,83 @@ export class AppModule <span class="si">{}</span>
         <!-- End Post -->
 
     </div>
+    <script>
+        function getTOCNodes(master) {
+            var nodes = Array.prototype.slice.call(
+                master.getElementsByTagName("*"),
+                0
+            );
+            var tocNodes = nodes.filter(function (elem) {
+                return elem.tagName == "A";
+            });
+            return tocNodes;
+        }
+        function getHeaderNodes(master) {
+            var nodes = Array.prototype.slice.call(
+                master.getElementsByTagName("*"),
+                0
+            );
+            var headerNodes = nodes.filter(function (elem) {
+                return (
+                    elem.tagName == "H1" ||
+                    elem.tagName == "H2" ||
+                    elem.tagName == "H3"
+                );
+            });
+            return headerNodes;
+        }
+        var title = document.getElementsByClassName("posttitle")[0];
+        var article = document.getElementsByClassName("article-post")[0];
+        var articleY = window.pageYOffset + article.getBoundingClientRect().top;
+        var toc = document.getElementsByClassName("toc")[0];
+        var headerNodes = getHeaderNodes(article);
+        var tocNodes = getTOCNodes(toc);
+        var before = undefined;
+
+        document.addEventListener(
+            "scroll",
+            function (e) {
+                var diff = window.scrollY - (articleY) + 100;
+                toc.style.cssText =
+                    "position: absolute; top: " + (articleY + diff) + "px;";
+                articleY = window.pageYOffset + article.getBoundingClientRect().top;
+                // } else {
+                //   toc.style.cssText = "";
+                // }
+
+                var current = headerNodes.filter(function (header) {
+                    var headerY = window.pageYOffset + header.getBoundingClientRect().top;
+                    return window.scrollY >= headerY - 60;
+                });
+
+                if (current.length > 0) {
+                    current = current[current.length - 1];
+                    var currentA = tocNodes.filter(function (tocNode) {
+                        return tocNode.innerHTML == current.innerHTML;
+                    });
+
+                    currentA = currentA[0];
+                    if (currentA) {
+                        if (before == undefined) before = currentA;
+
+                        if (before != currentA) {
+                            before.classList.remove("toc-active");
+                            before.style.cssText = "color:default;";
+                            before = currentA;
+                        }
+
+                        currentA.classList.add("toc-active");
+                        currentA.style.cssText = "color:#DE361D;";
+                    } else {
+                        if (before) before.classList.remove("toc-active");
+                    }
+                } else {
+                    if (before) before.classList.remove("toc-active");
+                }
+            },
+            false
+        );
+    </script>
 </div>
 <!-- End Article
 ================================================== -->
@@ -534,6 +611,8 @@ export class AppModule <span class="si">{}</span>
 <!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
 https://search.google.com/structured-data/testing-tool/u/0/
 ================================================== -->
+
+
 
 </div>
 

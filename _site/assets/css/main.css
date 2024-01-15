@@ -440,4 +440,61 @@ pre.lineno {
   font-size: 150%;
 }
 
+.toc {
+  position: absolute;
+  right: 0px;
+  width: 180px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-right: 0px;
+  font-size: 0.9rem;
+  border-left: 2px solid #e0d9e7;
+  color: #333333;
+  display: none;
+}
+@media (min-width: 75em) {
+  .toc {
+    width: 180px;
+    display: block;
+  }
+}
+@media (min-width: 85em) {
+  .toc {
+    width: 240px;
+    display: block;
+  }
+}
+@media (min-width: 95em) {
+  .toc {
+    width: 300px;
+    display: block;
+  }
+}
+.toc a.toc-active {
+  font-weight: bold;
+  transition: all 0.125s ease-in 0s;
+  font-size: 1rem;
+  color: #9075aa;
+}
+.toc ul {
+  list-style-type: none;
+  margin-bottom: 0.1rem;
+  padding-left: 0rem;
+}
+.toc ul li {
+  padding-left: 0.5rem;
+  font-size: 1rem;
+}
+.toc ul li ul li {
+  font-size: 0.9rem;
+}
+.toc a {
+  color: #888888;
+  text-decoration: none;
+}
+
 /*# sourceMappingURL=main.css.map */

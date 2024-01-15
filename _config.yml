@@ -30,6 +30,7 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-archives
+  - jekyll-toc
     
 # Archives
 jekyll-archives:
@@ -44,6 +45,18 @@ paginate: 9
 paginate_path: /page:num/
     
 # Other
+toc:
+  min_level: 1
+  max_level: 3
+  ordered_list: false
+  no_toc_section_class: no_toc_section
+  list_id: toc
+  list_class: section-nav
+  sublist_class: ''
+  item_class: toc-entry
+  item_prefix: toc-
+
+
 markdown: kramdown
 
 kramdown:

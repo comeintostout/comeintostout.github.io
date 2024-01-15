@@ -144,6 +144,58 @@
     <!-- Begin Article
 ================================================== -->
 <div class="container">
+    <!-- Toc if any -->
+    
+        
+        <div class="toc mt-4 mb-4 lead">
+            <h6 class="font-weight-bold">Summary</h6>
+            <ul>
+  <li><a href="#크롤링-준비">크롤링 준비</a>
+    <ul>
+      <li><a href="#가상-환경-vs-로컬">가상 환경 VS 로컬</a></li>
+      <li><a href="#selenium">Selenium</a>
+        <ul>
+          <li><a href="#selenium의-필요성">Selenium의 필요성</a></li>
+          <li><a href="#selenium-준비">Selenium 준비</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#크롤링-시작">크롤링 시작</a>
+    <ul>
+      <li><a href="#selenium-시작">Selenium 시작</a>
+        <ul>
+          <li><a href="#페이지-접근">페이지 접근</a></li>
+          <li><a href="#해당-페이지에서-찾으려는-요소-탐색">해당 페이지에서 찾으려는 요소 탐색</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#multi-processing">Multi-Processing</a>
+    <ul>
+      <li><a href="#multiprocessing">multiprocessing</a></li>
+    </ul>
+  </li>
+  <li><a href="#트러블-슈팅">트러블 슈팅</a>
+    <ul>
+      <li><a href="#분명-개발자-도구에서는-보이는-데-find-가-안될-때-1--iframe">분명 개발자 도구에서는 보이는 데 find 가 안될 때 1 : iframe</a>
+        <ul>
+          <li><a href="#iframe-이란">iframe 이란?</a></li>
+          <li><a href="#selenium에서-iframe-페이지를-접근-하는-법">Selenium에서 iframe 페이지를 접근 하는 법</a></li>
+        </ul>
+      </li>
+      <li><a href="#분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size">분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size</a>
+        <ul>
+          <li><a href="#selenium의-브라우저-크기-조절">Selenium의 브라우저 크기 조절</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#참조">참조</a></li>
+</ul>
+        </div>
+    
+    <!-- End Toc -->
     <div class="row">
 
         <!-- Post Share -->
@@ -227,9 +279,6 @@
 
             <!-- Post Content -->
             <div class="article-post">
-                <!-- Toc if any -->
-                
-                <!-- End Toc -->
                 <p>회사에서 필요한 데이터를 수집 및 가공하는 과정에서 python으로 크롤링을 하게된 적이 있었다. 이 때 다양한 문제들을 접할 수 있었는데, 그 과정에서 얻어낸 정보들을 정리하기로 결심했다.</p>
 
 <blockquote>
@@ -688,17 +737,6 @@
 <p><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/iframe">MDN : 인라인 프레임 요소</a></p>
 
             </div>
-            <!-- Hit Count -->
-            <div style="text-align: center;">
-                <a
-                        href="http://hits.dwyl.com/comeintostout/localhost:4000/selenium-crawling/?style=flat-square"
-                        target="_blank"
-                >
-                    <img
-                            src="http://hits.dwyl.com/comeintostout/localhost:4000/selenium-crawling/.svg?style=flat-square"
-                    />
-                </a>
-            </div>
 
             <!-- Rating -->
             
@@ -759,6 +797,83 @@
         <!-- End Post -->
 
     </div>
+    <script>
+        function getTOCNodes(master) {
+            var nodes = Array.prototype.slice.call(
+                master.getElementsByTagName("*"),
+                0
+            );
+            var tocNodes = nodes.filter(function (elem) {
+                return elem.tagName == "A";
+            });
+            return tocNodes;
+        }
+        function getHeaderNodes(master) {
+            var nodes = Array.prototype.slice.call(
+                master.getElementsByTagName("*"),
+                0
+            );
+            var headerNodes = nodes.filter(function (elem) {
+                return (
+                    elem.tagName == "H1" ||
+                    elem.tagName == "H2" ||
+                    elem.tagName == "H3"
+                );
+            });
+            return headerNodes;
+        }
+        var title = document.getElementsByClassName("posttitle")[0];
+        var article = document.getElementsByClassName("article-post")[0];
+        var articleY = window.pageYOffset + article.getBoundingClientRect().top;
+        var toc = document.getElementsByClassName("toc")[0];
+        var headerNodes = getHeaderNodes(article);
+        var tocNodes = getTOCNodes(toc);
+        var before = undefined;
+
+        document.addEventListener(
+            "scroll",
+            function (e) {
+                var diff = window.scrollY - (articleY) + 100;
+                toc.style.cssText =
+                    "position: absolute; top: " + (articleY + diff) + "px;";
+                articleY = window.pageYOffset + article.getBoundingClientRect().top;
+                // } else {
+                //   toc.style.cssText = "";
+                // }
+
+                var current = headerNodes.filter(function (header) {
+                    var headerY = window.pageYOffset + header.getBoundingClientRect().top;
+                    return window.scrollY >= headerY - 60;
+                });
+
+                if (current.length > 0) {
+                    current = current[current.length - 1];
+                    var currentA = tocNodes.filter(function (tocNode) {
+                        return tocNode.innerHTML == current.innerHTML;
+                    });
+
+                    currentA = currentA[0];
+                    if (currentA) {
+                        if (before == undefined) before = currentA;
+
+                        if (before != currentA) {
+                            before.classList.remove("toc-active");
+                            before.style.cssText = "color:default;";
+                            before = currentA;
+                        }
+
+                        currentA.classList.add("toc-active");
+                        currentA.style.cssText = "color:#DE361D;";
+                    } else {
+                        if (before) before.classList.remove("toc-active");
+                    }
+                } else {
+                    if (before) before.classList.remove("toc-active");
+                }
+            },
+            false
+        );
+    </script>
 </div>
 <!-- End Article
 ================================================== -->
@@ -784,6 +899,8 @@
 <!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
 https://search.google.com/structured-data/testing-tool/u/0/
 ================================================== -->
+
+
 
 </div>
 

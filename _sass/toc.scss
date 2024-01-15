@@ -1,0 +1,63 @@
+$default : #888888;
+
+.toc {
+  position: absolute;
+  right: 0px;
+  width: 180px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-right: 0px;
+  font-size: 0.9rem;
+  border-left: 2px solid #e0d9e7;
+  color: #333333;
+
+  display: none;
+  @media (min-width: 75em){
+    width: 180px;
+    display: block;
+  }
+  @media (min-width: 85em){
+    width: 240px;
+    display: block;
+  }
+  @media (min-width: 95em){
+    width: 300px;
+    display: block;
+  }
+
+  a.toc-active {
+    font-weight: bold;
+    transition: all 0.125s ease-in 0s;
+    font-size: 1rem;
+    color: #9075aa;
+  }
+
+  ul {
+    list-style-type: none;
+    margin-bottom: 0.1rem;
+    padding-left: 0rem;
+    li {
+      padding-left: .5rem;
+      font-size: 1rem;
+
+      ul{
+        li{
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  a {
+    color: $default;
+    text-decoration: none;
+  }
+
+  a:hover {
+    //color:$theme-color;
+  }
+}

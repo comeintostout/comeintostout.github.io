@@ -9,6 +9,7 @@ featured: true
 hidden: true
 #rating: 4.5
 comments: true
+toc: true
 ---
 
 

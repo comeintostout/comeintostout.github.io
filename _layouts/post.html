@@ -8,6 +8,17 @@ post_class: post-template
 <!-- Begin Article
 ================================================== -->
 <div class="container">
+    <!-- Toc if any -->
+    {% if page.toc %}
+        {% if page.beforetoc %}
+            <p><em>{{page.beforetoc}}</em></p>
+        {% endif %}
+        <div class="toc mt-4 mb-4 lead">
+            <h6 class="font-weight-bold">Summary</h6>
+            {% include toc.html html=content %}
+        </div>
+    {% endif %}
+    <!-- End Toc -->
     <div class="row">
 
         <!-- Post Share -->
@@ -63,29 +74,7 @@ post_class: post-template
 
             <!-- Post Content -->
             <div class="article-post">
-                <!-- Toc if any -->
-                {% if page.toc %}
-                    {% if page.beforetoc %}
-                        <p><em>{{page.beforetoc}}</em></p>
-                    {% endif %}
-                    <div class="toc mt-4 mb-4 lead">
-                        <h3 class="font-weight-bold">Summary</h3>
-                        {% include toc.html html=content %}
-                    </div>
-                {% endif %}
-                <!-- End Toc -->
                 {{content}}
-            </div>
-            <!-- Hit Count -->
-            <div style="text-align: center;">
-                <a
-                        href="http://hits.dwyl.com/comeintostout/{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}?style=flat-square"
-                        target="_blank"
-                >
-                    <img
-                            src="http://hits.dwyl.com/comeintostout/{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}.svg?style=flat-square"
-                    />
-                </a>
             </div>
 
             <!-- Rating -->
@@ -147,6 +136,83 @@ post_class: post-template
         <!-- End Post -->
 
     </div>
+    <script>
+        function getTOCNodes(master) {
+            var nodes = Array.prototype.slice.call(
+                master.getElementsByTagName("*"),
+                0
+            );
+            var tocNodes = nodes.filter(function (elem) {
+                return elem.tagName == "A";
+            });
+            return tocNodes;
+        }
+        function getHeaderNodes(master) {
+            var nodes = Array.prototype.slice.call(
+                master.getElementsByTagName("*"),
+                0
+            );
+            var headerNodes = nodes.filter(function (elem) {
+                return (
+                    elem.tagName == "H1" ||
+                    elem.tagName == "H2" ||
+                    elem.tagName == "H3"
+                );
+            });
+            return headerNodes;
+        }
+        var title = document.getElementsByClassName("posttitle")[0];
+        var article = document.getElementsByClassName("article-post")[0];
+        var articleY = window.pageYOffset + article.getBoundingClientRect().top;
+        var toc = document.getElementsByClassName("toc")[0];
+        var headerNodes = getHeaderNodes(article);
+        var tocNodes = getTOCNodes(toc);
+        var before = undefined;
+
+        document.addEventListener(
+            "scroll",
+            function (e) {
+                var diff = window.scrollY - (articleY) + 100;
+                toc.style.cssText =
+                    "position: absolute; top: " + (articleY + diff) + "px;";
+                articleY = window.pageYOffset + article.getBoundingClientRect().top;
+                // } else {
+                //   toc.style.cssText = "";
+                // }
+
+                var current = headerNodes.filter(function (header) {
+                    var headerY = window.pageYOffset + header.getBoundingClientRect().top;
+                    return window.scrollY >= headerY - 60;
+                });
+
+                if (current.length > 0) {
+                    current = current[current.length - 1];
+                    var currentA = tocNodes.filter(function (tocNode) {
+                        return tocNode.innerHTML == current.innerHTML;
+                    });
+
+                    currentA = currentA[0];
+                    if (currentA) {
+                        if (before == undefined) before = currentA;
+
+                        if (before != currentA) {
+                            before.classList.remove("toc-active");
+                            before.style.cssText = "color:default;";
+                            before = currentA;
+                        }
+
+                        currentA.classList.add("toc-active");
+                        currentA.style.cssText = "color:#DE361D;";
+                    } else {
+                        if (before) before.classList.remove("toc-active");
+                    }
+                } else {
+                    if (before) before.classList.remove("toc-active");
+                }
+            },
+            false
+        );
+    </script>
 </div>
 <!-- End Article
 ================================================== -->
@@ -172,6 +238,8 @@ post_class: post-template
 <!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
 https://search.google.com/structured-data/testing-tool/u/0/
 ================================================== -->
+
+
 {% if page.rating %}
 <script type="application/ld+json">
 {
