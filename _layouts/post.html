@@ -144,12 +144,16 @@ post_class: post-template
 ================================================== -->
 {% if page.comments != false %}
     <div class="container">
-        <div id="comments" class="row justify-content-center mb-5">
-            <div class="col-md-8">
-                {% include disqus.html %}
-            </div>
-        </div>
+        <script src="https://utteranc.es/client.js"
+                repo="comeintostout/comeintostout.github.io"
+                issue-term="pathname"
+                label="comments"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+        </script>
     </div>
+
 {% endif %}
 <!--End Comments
 ================================================== -->
