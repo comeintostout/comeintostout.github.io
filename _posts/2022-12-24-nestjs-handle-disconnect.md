@@ -16,7 +16,7 @@ toc: true
 
 부스트캠프에서 팀원들과 `SleepyWoods`라는 실시간 WebSocket 서비스를 만들었을 때, `Socket.io`를 사용했었다. 이번 글에서는 간단하게 클라이언트의 disconnect를 감지하는 부분을 구현해보자.
 
-# HandleDisconnect
+## HandleDisconnect
 
 ---
 
@@ -43,7 +43,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 <br>
 
-# HandleDisconnect는 모든 disconnect을 감지할까?
+### HandleDisconnect는 모든 disconnect을 감지할까?
 
 ---
 
@@ -65,7 +65,7 @@ public handleDisconnect(client: sleepySocket): void {
 
 <br>
 
-# PingInterval과 pingTimeout
+## PingInterval과 pingTimeout
 
 ---
 
@@ -101,7 +101,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 <br>
 
-# 참조
+## 참조
 
 ---
 

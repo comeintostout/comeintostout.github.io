@@ -12,12 +12,13 @@ License: https://www.wowthemes.net/freebies-license/
 }
 
 a {
-    color: #00ab6b;
+    /*color: #038252;*/
+    color: #824b10;
     transition: all 0.2s;
 }
 
 a:hover {
-    color: #038252;
+    color: #cb3048;
     text-decoration: none;
 }
 
@@ -337,7 +338,7 @@ span.post-read-more a:hover {
 }
 
 blockquote {
-    border-left: 4px solid #00ab6b;
+    border-left: 4px solid #2a5ba1;
     padding: 0 20px;
     font-style: italic;
     color: rgba(0, 0, 0, .5);
@@ -346,6 +347,7 @@ blockquote {
 .article-post p,
 .article-post blockquote {
     margin: 0 0 1.5rem 0;
+
 }
 
 .featured-image {
@@ -702,6 +704,24 @@ h6 {
 .article-post h6 {
     font-weight: 700;
     margin-bottom: 1.5rem;
+}
+
+.article-post h2 {
+    /*color : #094680;*/
+    color: #038252;
+}
+
+.article-post h3 {
+    /*color : #2a5ba1;*/
+    color: #0a3b21;
+}
+
+.article-post h5 {
+    color: #2e1b08;
+}
+
+.article-post .highlighter-rouge {
+    color: #cc6b0a;
 }
 
 .article-post img.shadow {

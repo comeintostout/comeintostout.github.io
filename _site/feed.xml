@@ -5,9 +5,87 @@
     <description>과정을 담는 개발 블로그입니다.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 16 Jan 2024 17:14:34 +0900</pubDate>
-    <lastBuildDate>Tue, 16 Jan 2024 17:14:34 +0900</lastBuildDate>
+    <pubDate>Sun, 28 Jan 2024 00:32:46 +0900</pubDate>
+    <lastBuildDate>Sun, 28 Jan 2024 00:32:46 +0900</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>문진, 모노레포 적용기 (feat. Turborepo)</title>
+        <description>&lt;h2 id=&quot;모노레포를-결정한-이유&quot;&gt;모노레포를 결정한 이유&lt;/h2&gt;
+&lt;h3 id=&quot;기존의-불편함&quot;&gt;기존의 불편함&lt;/h3&gt;
+&lt;p&gt;현재 문진 웹서비스의 개발 팀원은 백엔드 개발자인 나와 프론트엔드 개발자인 윤하님 두명으로 구성되어 있다.
+기존에 같이 토이 프로젝트를 진행하면서 백엔드와 프론트엔드를 분리하여 개발했었는데, 다음과 같은 불편한 점들이 있었다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;서로의 &lt;strong&gt;코드가 따로 관리&lt;/strong&gt;되어 피드백을 주고받는 과정이 매우 번거롭다.&lt;/li&gt;
+  &lt;li&gt;API를 주고 받을 때 input, output 의 형식을 각자 관리 해야하는데, 이는 &lt;strong&gt;비효율적이면서 불일치&lt;/strong&gt;가 발생할 수 있다.&lt;/li&gt;
+  &lt;li&gt;같이 사용할 수 있는 &lt;strong&gt;코드들을 공유하기가 어렵다&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;사실 셋 다 비슷한 맥락의 불편함인데, 토이 프로젝트를 진행하며 위와 같은 내용들에 관해 자주 대화를 했었다. 
+문진 웹서비스 개발을 새로 시작하면서 위의 부분을 모노레포로 개선할 수 있지 않을까 생각했으며,
+마침 프론트와 백엔드 둘 다 Typescript 기반이라는 점에서 모노레포가 가져올 장점이 매력적이게 다가왔다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;모노레포의-장점&quot;&gt;모노레포의 장점&lt;/h3&gt;
+&lt;p&gt;모노레포는 여러 프로젝트를 하나의 레포지토리에서 관리하는 것을 의미한다.
+흔히 알려진 교과서적인 장점 말고 직접 프로젝트에 도입하면서 느낀 장점은 다음과 같았다.&lt;/p&gt;
+
+&lt;h5 id=&quot;1-서로의-코드를-쉽게-공유할-수-있으며-피드백을-주고받기가-편하다&quot;&gt;1. 서로의 코드를 쉽게 공유할 수 있으며, 피드백을 주고받기가 편하다.&lt;/h5&gt;
+&lt;p&gt;아직 서버 배포가 이뤄지지 않은 상황에서 윤하님은 로컬에서 개발을 진행할 때, 서버를 띄워두고 테스트를 진행한다.
+모노레포 환경에선 서버와 클라이언트를 동시에 띄워두고 개발을 진행하는 데 더 수월하며,
+문제가 생겼을 시 어느 부분에서의 문제인지 조금 더 자세히 알 수 있었다.&lt;br /&gt;
+&lt;u&gt;프론트 개발자가 개발 시 서버의 동작을 이해하야 하나?&lt;/u&gt; 는 분명 아닐 수 있지만,
+서로의 영역을 어느 정도 이해하고 있는 우리 개발팀의 입장에서는 생산성에 도움이 되었다.&lt;/p&gt;
+
+&lt;h5 id=&quot;2-api의-input-output-형식을-공유할-수-있다&quot;&gt;2. API의 input, output 형식을 공유할 수 있다.&lt;/h5&gt;
+&lt;p&gt;토이 프로젝트를 진행하면서 항상 불편했던 부분은 API를 만들었을 때, 문서 기반의 의사소통을 한다는 점이며
+각자가 해당 API 문서를 통해 필요한 데이터를 관리해야 한다는 점이었다. &lt;br /&gt;
+모노레포에선 해당 부분을 api-types로 추출하여 같이 공유하는 식으로 개선할 수 있다.&lt;/p&gt;
+
+&lt;h5 id=&quot;3-코드-및-lint-prettier-등의-설정을-공유할-수-있다&quot;&gt;3. 코드 및 lint, prettier 등의 설정을 공유할 수 있다.&lt;/h5&gt;
+&lt;p&gt;코드 컨벤션 통일을 위해 lint, prettier 등의 설정을 다양한 app에서 공유할 수 있다는 점 또한 장점이다.
+통일된 코드 컨벤션은 서로의 코드를 봐야할 떄도 빛을 발한다. &lt;br /&gt;
+또한 중복되는 코드들을 서로 공유할 수 있어 좋았다.&lt;/p&gt;
+
+&lt;h5 id=&quot;4-확장성&quot;&gt;4. 확장성&lt;/h5&gt;
+&lt;p&gt;lint, prettier 등의 설정 파일과 다양한 유틸 함수가 쉽게 제공되고 있는 모노레포에서, 
+새로운 프로젝트를 생성할 때 굉장히 편리하다. 따라서 확장성이 좋다고 생각했다. &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;이외에도 다양한 모노레포의 장점이 있으며, 위의 내가 말한 장점이 누군가에겐 다른 방식으로 해결될 수 있는 
+작은 부분일 수 있지만, 우리의 입장에서는 모노레포를 도입하기로 결정하는 데 매력적인 요인이 되었다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;turborepo를-활용한-모노레포-적용&quot;&gt;Turborepo를 활용한 모노레포 적용&lt;/h2&gt;
+
+&lt;h3 id=&quot;turborepo란&quot;&gt;Turborepo란?&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Turborepo는 JavaScript와 TypeScript 코드 베이스의 모노레포를 위한 고성능 빌드 시스템이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Turborepo를 구성하는 방법이나 동작 원리 등은 이 글에서 다루지 않을 것이기에 아래의 더 훌륭한 자료들을 참고하면 좋을 것 같다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://turborepo.org/&quot;&gt;Turborepo 공식 문서&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://engineering.linecorp.com/ko/blog/monorepo-with-turborepo#1-2&quot;&gt;Turborepo로 모노레포 개발 경험 향상하기&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;turborepo&quot;&gt;Turborepo&lt;/h3&gt;
+</description>
+        <pubDate>Sat, 27 Jan 2024 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/moonjin-monorepo/</link>
+        <guid isPermaLink="true">http://localhost:4000/moonjin-monorepo/</guid>
+        
+        <category>문진</category>
+        
+        <category>Turborepo</category>
+        
+        
+        <category>문진</category>
+        
+        <category>Turborepo</category>
+        
+      </item>
     
       <item>
         <title>Selenium을 이용한 동적 크롤링</title>
@@ -19,13 +97,13 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;크롤링-준비&quot;&gt;크롤링 준비&lt;/h1&gt;
+&lt;h2 id=&quot;크롤링-준비&quot;&gt;크롤링 준비&lt;/h2&gt;
 
 &lt;p&gt;크롤링을 하기 전에 환경을 먼저 구성하자. 본인의 크롤링 상황에 적합한 라이브러리를 선택하고 확장성을 고려하자.&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;가상-환경-vs-로컬&quot;&gt;가상 환경 VS 로컬&lt;/h2&gt;
+&lt;h3 id=&quot;가상-환경-vs-로컬&quot;&gt;가상 환경 VS 로컬&lt;/h3&gt;
 
 &lt;hr /&gt;
 
@@ -110,11 +188,11 @@
 &lt;p&gt;&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;크롤링-시작&quot;&gt;크롤링 시작&lt;/h1&gt;
+&lt;h2 id=&quot;크롤링-시작&quot;&gt;크롤링 시작&lt;/h2&gt;
 
 &lt;p&gt;준비를 마쳤다면 본격적으로 크롤링을 시작해보자.&lt;/p&gt;
 
-&lt;h2 id=&quot;selenium-시작&quot;&gt;Selenium 시작&lt;/h2&gt;
+&lt;h3 id=&quot;selenium-시작&quot;&gt;Selenium 시작&lt;/h3&gt;
 
 &lt;hr /&gt;
 
@@ -262,13 +340,13 @@
 &lt;p&gt;&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;multi-processing&quot;&gt;Multi-Processing&lt;/h1&gt;
+&lt;h2 id=&quot;multi-processing&quot;&gt;Multi-Processing&lt;/h2&gt;
 
 &lt;p&gt;사실 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Multi-Processing&lt;/code&gt; 까지 해야할 필요는 없을 수 있다. 그러나 회사 규모의 큰 집단에서 다루는 데이터들은 보통 양이 많다. 이전에 받은 크롤링 업무에서 처리해야할 데이터가 약 2만 개 정도였다. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Selenium&lt;/code&gt; 으로 페이지 이동을 하면서 한 데이터를 처리하는데 10~30초 정도 걸렸는데, 싱글 쓰레드로 2만 개 정도를 계산해보니 950 시간 정도가 걸렸던 것 같다. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Multi-Processing&lt;/code&gt;이 간절히 필요했다&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;multiprocessing&quot;&gt;multiprocessing&lt;/h2&gt;
+&lt;h3 id=&quot;multiprocessing&quot;&gt;Multiprocessing&lt;/h3&gt;
 
 &lt;hr /&gt;
 
@@ -333,13 +411,13 @@
 &lt;p&gt;&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;트러블-슈팅&quot;&gt;트러블 슈팅&lt;/h1&gt;
+&lt;h2 id=&quot;트러블-슈팅&quot;&gt;트러블 슈팅&lt;/h2&gt;
 
 &lt;p&gt;크롤링을 하면서 다양한 이슈들이 있었다. Google에 은근 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Selenium&lt;/code&gt;에 관한 정보들이 파편화 되어 있고 명확하게 없어서 기록해보기로 했다.&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;분명-개발자-도구에서는-보이는-데-find-가-안될-때-1--iframe&quot;&gt;분명 개발자 도구에서는 보이는 데 find 가 안될 때 1 : iframe&lt;/h2&gt;
+&lt;h3 id=&quot;분명-개발자-도구에서는-보이는-데-find-가-안될-때--iframe&quot;&gt;분명 개발자 도구에서는 보이는 데 find 가 안될 때 : iframe&lt;/h3&gt;
 
 &lt;hr /&gt;
 
@@ -349,7 +427,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;iframe-이란&quot;&gt;iframe 이란?&lt;/h3&gt;
+&lt;h4 id=&quot;iframe-이란&quot;&gt;iframe 이란?&lt;/h4&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/ko/docs/Web/HTML/Element/iframe&quot;&gt;MDN : 인라인 프레임 요소&lt;/a&gt;&lt;/p&gt;
 
@@ -375,7 +453,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size&quot;&gt;분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size&lt;/h2&gt;
+&lt;h3 id=&quot;분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size&quot;&gt;분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size&lt;/h3&gt;
 
 &lt;hr /&gt;
 
@@ -487,7 +565,7 @@
         <title>[Nestjs] Socket Server에서 disconnect 감지하기</title>
         <description>&lt;p&gt;부스트캠프에서 팀원들과 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SleepyWoods&lt;/code&gt;라는 실시간 WebSocket 서비스를 만들었을 때, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Socket.io&lt;/code&gt;를 사용했었다. 이번 글에서는 간단하게 클라이언트의 disconnect를 감지하는 부분을 구현해보자.&lt;/p&gt;
 
-&lt;h1 id=&quot;handledisconnect&quot;&gt;HandleDisconnect&lt;/h1&gt;
+&lt;h2 id=&quot;handledisconnect&quot;&gt;HandleDisconnect&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -525,7 +603,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;handledisconnect는-모든-disconnect을-감지할까&quot;&gt;HandleDisconnect는 모든 disconnect을 감지할까?&lt;/h1&gt;
+&lt;h3 id=&quot;handledisconnect는-모든-disconnect을-감지할까&quot;&gt;HandleDisconnect는 모든 disconnect을 감지할까?&lt;/h3&gt;
 
 &lt;hr /&gt;
 
@@ -552,7 +630,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;pinginterval과-pingtimeout&quot;&gt;PingInterval과 pingTimeout&lt;/h1&gt;
+&lt;h2 id=&quot;pinginterval과-pingtimeout&quot;&gt;PingInterval과 pingTimeout&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -603,7 +681,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;참조&quot;&gt;참조&lt;/h1&gt;
+&lt;h2 id=&quot;참조&quot;&gt;참조&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -710,7 +788,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;모듈을-동적으로-만들자&quot;&gt;모듈을 동적으로 만들자&lt;/h1&gt;
+&lt;h2 id=&quot;모듈을-동적으로-만들자&quot;&gt;모듈을 동적으로 만들자&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -774,7 +852,7 @@
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;모듈을-동적으로-만들자-2&quot;&gt;모듈을 동적으로 만들자 2&lt;/h1&gt;
+&lt;h2 id=&quot;모듈을-동적으로-만들자-2&quot;&gt;모듈을 동적으로 만들자 2&lt;/h2&gt;
 
 &lt;p&gt;아래의 방식은 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JwtModule&lt;/code&gt;에 환경변수 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JWT_SECRET_KEY&lt;/code&gt;를 주입하다가 알아낸 방식이다.&lt;/p&gt;
 
@@ -829,13 +907,13 @@ export class AppModule &lt;span class=&quot;si&quot;&gt;{}&lt;/span&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;개선점&quot;&gt;개선점&lt;/h1&gt;
+&lt;h2 id=&quot;개선점&quot;&gt;개선점&lt;/h2&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;위와 같은 방식에서 가장 불편한(?) 점은 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Module&lt;/code&gt; 부분에 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TypeOrmModuleOptions&lt;/code&gt; 같은 부분이 일일이 적힌다는 것이다. 나중에 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module&lt;/code&gt;에 내용이 많아진다면, 코드가 지저분해질 수 있다. 해당 부분을 해결할 순 없을까?&lt;/p&gt;
 
-&lt;h1 id=&quot;참조&quot;&gt;참조&lt;/h1&gt;
+&lt;h2 id=&quot;참조&quot;&gt;참조&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://velog.io/@kakasoo/Nest%EC%97%90%EC%84%9C-ConfigModule-TypeORM-%EC%93%B0%EA%B8%B0&quot;&gt;Nest.js에 ConfigModule 설정&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -860,7 +938,7 @@ export class AppModule &lt;span class=&quot;si&quot;&gt;{}&lt;/span&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;부스트캠프-이전의-나&quot;&gt;부스트캠프 이전의 나&lt;/h1&gt;
+&lt;h2 id=&quot;부스트캠프-이전의-나&quot;&gt;부스트캠프 이전의 나&lt;/h2&gt;
 
 &lt;p&gt;나는 그냥 컴퓨터공학과를 다니던 평범한 전공생이었다. 컴퓨터공학이 좋아서 오긴 했으나, 고등학교 생활의 보상심리였을까 대학교에서의 공부를 그닥 밀도 있게 하지는 않았다. 즐겁게 공부하긴 했지만 사실 열을 다해서 하진 않았으며, 딱 뒤쳐지지 않은 정도였다. 그렇게 무기력하게 학교를 다니다 진로를 정해야할 때가 되었고, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;System Programming&lt;/code&gt;수업과 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DB&lt;/code&gt;수업을 흥미롭게 듣던 나는 얼떨결에 백엔드 개발자가 되기로 결심했다.&lt;/p&gt;
 
@@ -870,13 +948,13 @@ export class AppModule &lt;span class=&quot;si&quot;&gt;{}&lt;/span&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;부스트캠프-과정의-나&quot;&gt;부스트캠프 과정의 나&lt;/h1&gt;
+&lt;h2 id=&quot;부스트캠프-과정의-나&quot;&gt;부스트캠프 과정의 나&lt;/h2&gt;
 
 &lt;p&gt;우선 웹에 대해서 공부하기로 하고 부스트캠프에 지원했다. 두 차례의 코딩 테스트를 통해 선발이 되었는데, 이는 다행히도 1,2월쯤 들었던 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;삼성전자 DX부문 동계 대학생 S/W 알고리즘 역량 강화 특강&lt;/code&gt;의 덕이 컸다. 이 후 챌린지 기간을 거치며 &lt;strong&gt;&lt;u&gt;기초 CS 지식 심화학습 및 분야별 도메인 지식 학습&lt;/u&gt;&lt;/strong&gt;을 진행했는데, 이 과정이 근래에 가장 힘들었던 기간인 것 같다.&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;챌린지&quot;&gt;챌린지&lt;/h2&gt;
+&lt;h3 id=&quot;챌린지&quot;&gt;챌린지&lt;/h3&gt;
 
 &lt;p&gt;&lt;em&gt;2022.07.18~08.12&lt;/em&gt;&lt;/p&gt;
 
@@ -892,7 +970,7 @@ export class AppModule &lt;span class=&quot;si&quot;&gt;{}&lt;/span&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;멤버십&quot;&gt;멤버십&lt;/h2&gt;
+&lt;h3 id=&quot;멤버십&quot;&gt;멤버십&lt;/h3&gt;
 
 &lt;p&gt;&lt;em&gt;2022.08.31~12.16&lt;/em&gt;&lt;/p&gt;
 
@@ -917,7 +995,7 @@ export class AppModule &lt;span class=&quot;si&quot;&gt;{}&lt;/span&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;부스트캠프-이후의-나&quot;&gt;부스트캠프 이후의 나&lt;/h1&gt;
+&lt;h2 id=&quot;부스트캠프-이후의-나&quot;&gt;부스트캠프 이후의 나&lt;/h2&gt;
 
 &lt;p&gt;부스트캠프의 슬로건은 다음과 같다.&lt;/p&gt;
 

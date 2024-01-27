@@ -63,7 +63,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
 
 <br>
 
-# 모듈을 동적으로 만들자
+## 모듈을 동적으로 만들자
 
 ---
 
@@ -101,7 +101,7 @@ export class AppModule {}
 
 <br>
 
-# 모듈을 동적으로 만들자 2
+## 모듈을 동적으로 만들자 2
 
 아래의 방식은 `JwtModule`에 환경변수 `JWT_SECRET_KEY`를 주입하다가 알아낸 방식이다.
 
@@ -135,12 +135,12 @@ export class AppModule {}
 
 <br>
 
-# 개선점
+## 개선점
 
 ---
 
 위와 같은 방식에서 가장 불편한(?) 점은 `Module` 부분에 `TypeOrmModuleOptions` 같은 부분이 일일이 적힌다는 것이다. 나중에 `module`에 내용이 많아진다면, 코드가 지저분해질 수 있다. 해당 부분을 해결할 순 없을까?
 
-# 참조
+## 참조
 
 [Nest.js에 ConfigModule 설정](https://velog.io/@kakasoo/Nest%EC%97%90%EC%84%9C-ConfigModule-TypeORM-%EC%93%B0%EA%B8%B0)

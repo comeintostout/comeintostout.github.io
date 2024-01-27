@@ -148,50 +148,39 @@
     
         
         <div class="toc mt-4 mb-4 lead">
-            <h6 class="font-weight-bold">Summary</h6>
+            <h6 class="font-weight-bold">목차</h6>
             <ul>
   <li><a href="#크롤링-준비">크롤링 준비</a>
     <ul>
       <li><a href="#가상-환경-vs-로컬">가상 환경 VS 로컬</a></li>
-      <li><a href="#selenium">Selenium</a>
-        <ul>
-          <li><a href="#selenium의-필요성">Selenium의 필요성</a></li>
-          <li><a href="#selenium-준비">Selenium 준비</a></li>
-        </ul>
-      </li>
+    </ul>
+  </li>
+  <li><a href="#selenium">Selenium</a>
+    <ul>
+      <li><a href="#selenium의-필요성">Selenium의 필요성</a></li>
+      <li><a href="#selenium-준비">Selenium 준비</a></li>
     </ul>
   </li>
   <li><a href="#크롤링-시작">크롤링 시작</a>
     <ul>
-      <li><a href="#selenium-시작">Selenium 시작</a>
-        <ul>
-          <li><a href="#페이지-접근">페이지 접근</a></li>
-          <li><a href="#해당-페이지에서-찾으려는-요소-탐색">해당 페이지에서 찾으려는 요소 탐색</a></li>
-        </ul>
-      </li>
+      <li><a href="#selenium-시작">Selenium 시작</a></li>
+      <li><a href="#페이지-접근">페이지 접근</a></li>
+      <li><a href="#해당-페이지에서-찾으려는-요소-탐색">해당 페이지에서 찾으려는 요소 탐색</a></li>
     </ul>
   </li>
   <li><a href="#multi-processing">Multi-Processing</a>
     <ul>
-      <li><a href="#multiprocessing">multiprocessing</a></li>
+      <li><a href="#multiprocessing">Multiprocessing</a></li>
     </ul>
   </li>
   <li><a href="#트러블-슈팅">트러블 슈팅</a>
     <ul>
-      <li><a href="#분명-개발자-도구에서는-보이는-데-find-가-안될-때-1--iframe">분명 개발자 도구에서는 보이는 데 find 가 안될 때 1 : iframe</a>
-        <ul>
-          <li><a href="#iframe-이란">iframe 이란?</a></li>
-          <li><a href="#selenium에서-iframe-페이지를-접근-하는-법">Selenium에서 iframe 페이지를 접근 하는 법</a></li>
-        </ul>
-      </li>
-      <li><a href="#분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size">분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size</a>
-        <ul>
-          <li><a href="#selenium의-브라우저-크기-조절">Selenium의 브라우저 크기 조절</a></li>
-        </ul>
-      </li>
+      <li><a href="#분명-개발자-도구에서는-보이는-데-find-가-안될-때--iframe">분명 개발자 도구에서는 보이는 데 find 가 안될 때 : iframe</a></li>
+      <li><a href="#selenium에서-iframe-페이지를-접근-하는-법">Selenium에서 iframe 페이지를 접근 하는 법</a></li>
+      <li><a href="#분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size">분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size</a></li>
+      <li><a href="#selenium의-브라우저-크기-조절">Selenium의 브라우저 크기 조절</a></li>
     </ul>
   </li>
-  <li><a href="#참조">참조</a></li>
 </ul>
         </div>
     
@@ -287,13 +276,13 @@
 
 <p><br /></p>
 
-<h1 id="크롤링-준비">크롤링 준비</h1>
+<h2 id="크롤링-준비">크롤링 준비</h2>
 
 <p>크롤링을 하기 전에 환경을 먼저 구성하자. 본인의 크롤링 상황에 적합한 라이브러리를 선택하고 확장성을 고려하자.</p>
 
 <p><br /></p>
 
-<h2 id="가상-환경-vs-로컬">가상 환경 VS 로컬</h2>
+<h3 id="가상-환경-vs-로컬">가상 환경 VS 로컬</h3>
 
 <hr />
 
@@ -378,11 +367,11 @@
 <p><br />
 <br /></p>
 
-<h1 id="크롤링-시작">크롤링 시작</h1>
+<h2 id="크롤링-시작">크롤링 시작</h2>
 
 <p>준비를 마쳤다면 본격적으로 크롤링을 시작해보자.</p>
 
-<h2 id="selenium-시작">Selenium 시작</h2>
+<h3 id="selenium-시작">Selenium 시작</h3>
 
 <hr />
 
@@ -530,13 +519,13 @@
 <p><br />
 <br /></p>
 
-<h1 id="multi-processing">Multi-Processing</h1>
+<h2 id="multi-processing">Multi-Processing</h2>
 
 <p>사실 <code class="language-plaintext highlighter-rouge">Multi-Processing</code> 까지 해야할 필요는 없을 수 있다. 그러나 회사 규모의 큰 집단에서 다루는 데이터들은 보통 양이 많다. 이전에 받은 크롤링 업무에서 처리해야할 데이터가 약 2만 개 정도였다. <code class="language-plaintext highlighter-rouge">Selenium</code> 으로 페이지 이동을 하면서 한 데이터를 처리하는데 10~30초 정도 걸렸는데, 싱글 쓰레드로 2만 개 정도를 계산해보니 950 시간 정도가 걸렸던 것 같다. <code class="language-plaintext highlighter-rouge">Multi-Processing</code>이 간절히 필요했다</p>
 
 <p><br /></p>
 
-<h2 id="multiprocessing">multiprocessing</h2>
+<h3 id="multiprocessing">Multiprocessing</h3>
 
 <hr />
 
@@ -601,13 +590,13 @@
 <p><br />
 <br /></p>
 
-<h1 id="트러블-슈팅">트러블 슈팅</h1>
+<h2 id="트러블-슈팅">트러블 슈팅</h2>
 
 <p>크롤링을 하면서 다양한 이슈들이 있었다. Google에 은근 <code class="language-plaintext highlighter-rouge">Selenium</code>에 관한 정보들이 파편화 되어 있고 명확하게 없어서 기록해보기로 했다.</p>
 
 <p><br /></p>
 
-<h2 id="분명-개발자-도구에서는-보이는-데-find-가-안될-때-1--iframe">분명 개발자 도구에서는 보이는 데 find 가 안될 때 1 : iframe</h2>
+<h3 id="분명-개발자-도구에서는-보이는-데-find-가-안될-때--iframe">분명 개발자 도구에서는 보이는 데 find 가 안될 때 : iframe</h3>
 
 <hr />
 
@@ -617,7 +606,7 @@
 
 <p><br /></p>
 
-<h3 id="iframe-이란">iframe 이란?</h3>
+<h4 id="iframe-이란">iframe 이란?</h4>
 
 <p><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/iframe">MDN : 인라인 프레임 요소</a></p>
 
@@ -643,7 +632,7 @@
 
 <p><br /></p>
 
-<h2 id="분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size">분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size</h2>
+<h3 id="분명-개발자-도구에서는-보이는-데-find가-안될-때-2--window-size">분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size</h3>
 
 <hr />
 
@@ -789,6 +778,8 @@
             <a class="prev d-block col-md-6" href="//nestjs-handle-disconnect/"> &laquo; [Nestjs] Socket Server에서 disconnect 감지하기</a>
             
             
+            <a class="next d-block col-md-6 text-lg-right" href="//moonjin-monorepo/">문진, 모노레포 적용기 (feat. Turborepo) &raquo; </a>
+            
             <div class="clearfix"></div>
             </div>
             <!-- End Categories -->
@@ -932,6 +923,10 @@ https://search.google.com/structured-data/testing-tool/u/0/
                     <a class="mt-1 mb-1" href="/categories#Crawling">Crawling (1)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Selenium">Selenium (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#문진">문진 (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Turborepo">Turborepo (1)</a>
                 
             
             

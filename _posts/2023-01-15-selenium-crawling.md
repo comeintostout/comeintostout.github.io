@@ -19,13 +19,13 @@ toc: true
 
 <br>
 
-# 크롤링 준비
+## 크롤링 준비
 
 크롤링을 하기 전에 환경을 먼저 구성하자. 본인의 크롤링 상황에 적합한 라이브러리를 선택하고 확장성을 고려하자.
 
 <br>
 
-## 가상 환경 VS 로컬
+### 가상 환경 VS 로컬
 
 ---
 
@@ -85,11 +85,11 @@ pip를 통해 python에서 `Selenium`을 쓸 수 있도록 설치하자
 <br>
 <br>
 
-# 크롤링 시작
+## 크롤링 시작
 
 준비를 마쳤다면 본격적으로 크롤링을 시작해보자.
 
-## Selenium 시작
+### Selenium 시작
 
 ---
 
@@ -187,13 +187,13 @@ link = target.find_element(By.TAG_NAME, "a").get_attribute("href")
 <br>
 <br>
 
-# Multi-Processing
+## Multi-Processing
 
 사실 `Multi-Processing` 까지 해야할 필요는 없을 수 있다. 그러나 회사 규모의 큰 집단에서 다루는 데이터들은 보통 양이 많다. 이전에 받은 크롤링 업무에서 처리해야할 데이터가 약 2만 개 정도였다. `Selenium` 으로 페이지 이동을 하면서 한 데이터를 처리하는데 10~30초 정도 걸렸는데, 싱글 쓰레드로 2만 개 정도를 계산해보니 950 시간 정도가 걸렸던 것 같다. `Multi-Processing`이 간절히 필요했다
 
 <br>
 
-## multiprocessing
+### Multiprocessing
 
 ---
 
@@ -239,13 +239,13 @@ if __name__ == '__main__':
 <br>
 <br>
 
-# 트러블 슈팅
+## 트러블 슈팅
 
 크롤링을 하면서 다양한 이슈들이 있었다. Google에 은근 `Selenium`에 관한 정보들이 파편화 되어 있고 명확하게 없어서 기록해보기로 했다.
 
 <br>
 
-## 분명 개발자 도구에서는 보이는 데 find 가 안될 때 1 : iframe
+### 분명 개발자 도구에서는 보이는 데 find 가 안될 때 : iframe
 
 ---
 
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 
 <br>
 
-### iframe 이란?
+#### iframe 이란?
 
 [MDN : 인라인 프레임 요소](https://developer.mozilla.org/ko/docs/Web/HTML/Element/iframe)
 
@@ -279,7 +279,7 @@ def switchToIframeById(iframeId):
 
 <br>
 
-## 분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size
+### 분명 개발자 도구에서는 보이는 데 find가 안될 때 2 : window-size
 
 ---
 
