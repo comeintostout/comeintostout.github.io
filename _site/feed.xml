@@ -5,12 +5,12 @@
     <description>과정을 담는 개발 블로그입니다.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 28 Jan 2024 00:32:46 +0900</pubDate>
-    <lastBuildDate>Sun, 28 Jan 2024 00:32:46 +0900</lastBuildDate>
+    <pubDate>Sun, 28 Jan 2024 00:53:58 +0900</pubDate>
+    <lastBuildDate>Sun, 28 Jan 2024 00:53:58 +0900</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
     
       <item>
-        <title>문진, 모노레포 적용기 (feat. Turborepo)</title>
+        <title>[문진] 모노레포 적용기 (feat. Turborepo)</title>
         <description>&lt;h2 id=&quot;모노레포를-결정한-이유&quot;&gt;모노레포를 결정한 이유&lt;/h2&gt;
 &lt;h3 id=&quot;기존의-불편함&quot;&gt;기존의 불편함&lt;/h3&gt;
 &lt;p&gt;현재 문진 웹서비스의 개발 팀원은 백엔드 개발자인 나와 프론트엔드 개발자인 윤하님 두명으로 구성되어 있다.
@@ -31,25 +31,25 @@
 &lt;p&gt;모노레포는 여러 프로젝트를 하나의 레포지토리에서 관리하는 것을 의미한다.
 흔히 알려진 교과서적인 장점 말고 직접 프로젝트에 도입하면서 느낀 장점은 다음과 같았다.&lt;/p&gt;
 
-&lt;h5 id=&quot;1-서로의-코드를-쉽게-공유할-수-있으며-피드백을-주고받기가-편하다&quot;&gt;1. 서로의 코드를 쉽게 공유할 수 있으며, 피드백을 주고받기가 편하다.&lt;/h5&gt;
+&lt;h5 id=&quot;1-서로의-코드를-쉽게-공유할-수-있으며-피드백을-주고-받기가-편하다&quot;&gt;1. 서로의 코드를 쉽게 공유할 수 있으며, 피드백을 주고 받기가 편하다.&lt;/h5&gt;
 &lt;p&gt;아직 서버 배포가 이뤄지지 않은 상황에서 윤하님은 로컬에서 개발을 진행할 때, 서버를 띄워두고 테스트를 진행한다.
 모노레포 환경에선 서버와 클라이언트를 동시에 띄워두고 개발을 진행하는 데 더 수월하며,
 문제가 생겼을 시 어느 부분에서의 문제인지 조금 더 자세히 알 수 있었다.&lt;br /&gt;
 &lt;u&gt;프론트 개발자가 개발 시 서버의 동작을 이해하야 하나?&lt;/u&gt; 는 분명 아닐 수 있지만,
-서로의 영역을 어느 정도 이해하고 있는 우리 개발팀의 입장에서는 생산성에 도움이 되었다.&lt;/p&gt;
+서로의 영역을 어느 정도 이해하고 있는 우리 개발팀의 입장에서는 이러한 점이 생산성에 도움이 되었다.&lt;/p&gt;
 
 &lt;h5 id=&quot;2-api의-input-output-형식을-공유할-수-있다&quot;&gt;2. API의 input, output 형식을 공유할 수 있다.&lt;/h5&gt;
 &lt;p&gt;토이 프로젝트를 진행하면서 항상 불편했던 부분은 API를 만들었을 때, 문서 기반의 의사소통을 한다는 점이며
-각자가 해당 API 문서를 통해 필요한 데이터를 관리해야 한다는 점이었다. &lt;br /&gt;
-모노레포에선 해당 부분을 api-types로 추출하여 같이 공유하는 식으로 개선할 수 있다.&lt;/p&gt;
+해당 API 문서를 통해 각자가 필요한 데이터를 관리해야 한다는 점이었다. &lt;br /&gt;
+모노레포에선 해당 부분을 공통 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;packages&lt;/code&gt;로 추출하여 공유하는 식으로 개선할 수 있으며, 이는 한쪽에서
+&lt;strong&gt;수정 사항이 발생했을 시, 다른 쪽에서 런타임이 아닌 빌드 시간에 변경점을 파악할 수 있다는 것&lt;/strong&gt;이 큰 장점이다.&lt;/p&gt;
 
 &lt;h5 id=&quot;3-코드-및-lint-prettier-등의-설정을-공유할-수-있다&quot;&gt;3. 코드 및 lint, prettier 등의 설정을 공유할 수 있다.&lt;/h5&gt;
-&lt;p&gt;코드 컨벤션 통일을 위해 lint, prettier 등의 설정을 다양한 app에서 공유할 수 있다는 점 또한 장점이다.
-통일된 코드 컨벤션은 서로의 코드를 봐야할 떄도 빛을 발한다. &lt;br /&gt;
-또한 중복되는 코드들을 서로 공유할 수 있어 좋았다.&lt;/p&gt;
+&lt;p&gt;코드 컨벤션 통일을 위해 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lint&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prettier&lt;/code&gt; 등의 설정을 다양한 앱에서 공유할 수 있다는 점 또한 장점이다.
+통일된 코드 컨벤션은 서로의 코드를 봐야할 떄도 빛을 발한다. 또한 중복되는 코드들을 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;packages&lt;/code&gt;로 공유할 수 있어 좋았다.&lt;/p&gt;
 
 &lt;h5 id=&quot;4-확장성&quot;&gt;4. 확장성&lt;/h5&gt;
-&lt;p&gt;lint, prettier 등의 설정 파일과 다양한 유틸 함수가 쉽게 제공되고 있는 모노레포에서, 
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lint&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prettier&lt;/code&gt; 등의 설정 파일과 다양한 유틸 함수가 쉽게 제공되고 있는 모노레포에서, 
 새로운 프로젝트를 생성할 때 굉장히 편리하다. 따라서 확장성이 좋다고 생각했다. &lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;이외에도 다양한 모노레포의 장점이 있으며, 위의 내가 말한 장점이 누군가에겐 다른 방식으로 해결될 수 있는 
@@ -64,13 +64,22 @@
   &lt;p&gt;Turborepo는 JavaScript와 TypeScript 코드 베이스의 모노레포를 위한 고성능 빌드 시스템이다.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;Turborepo를 구성하는 방법이나 동작 원리 등은 이 글에서 다루지 않을 것이기에 아래의 더 훌륭한 자료들을 참고하면 좋을 것 같다.&lt;/p&gt;
+&lt;p&gt;Turborepo를 구성하는 방법이나 동작 원리 등은 아래의 더 훌륭한 자료들을 참고하면 좋을 것 같다.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://turborepo.org/&quot;&gt;Turborepo 공식 문서&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://engineering.linecorp.com/ko/blog/monorepo-with-turborepo#1-2&quot;&gt;Turborepo로 모노레포 개발 경험 향상하기&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://engineering.linecorp.com/ko/blog/monorepo-with-turborepo&quot;&gt;Turborepo로 모노레포 개발 경험 향상하기&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;turborepo&quot;&gt;Turborepo&lt;/h3&gt;
+&lt;h3 id=&quot;프로젝트에-turborepo-적용하기&quot;&gt;프로젝트에 Turborepo 적용하기&lt;/h3&gt;
+&lt;p&gt;현재 문진 웹서비스 프로젝트는 다음과 같은 기술 스택으로 계획했다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;프론트엔드 : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Next.js&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;백엔드 : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Nest.js&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;해당 서비스는 SEO가 매우 중요하기 때문에 프론트엔드를 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Next.js&lt;/code&gt;를 사용하게 되었고,
+백엔드는 같은 Typescript 기반의 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Nest.js&lt;/code&gt;를 사용하기로 했다.&lt;/p&gt;
+
 </description>
         <pubDate>Sat, 27 Jan 2024 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/moonjin-monorepo/</link>
