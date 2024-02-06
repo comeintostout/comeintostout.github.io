@@ -17,10 +17,12 @@ timezone: Asia/Seoul
 authors:
   stouter:
     name: 강성준
-    display_name: stouter
+    display_name: Stouter
+    avatar: 'assets/images/stouter.JPG'
     gravatar: e56154546cf4be74e393c62d1ae9f9d4
     email: rkdtjdwns916@gmail.com
     web: https://github.com/comeintostout
+    linkedin: https://www.linkedin.com/in/%EC%84%B1%EC%A4%80-%EA%B0%95-8a8b6425a/
     description: "백엔드 개발자입니다."
 
 # Plugins

@@ -9,3 +9,5 @@ _site/
 # Bundler 가 생성한 폴더 무시
 .bundle/
 vendor/bundle
+
+_posts_in_writing
