@@ -708,21 +708,20 @@ h6 {
 }
 
 .article-post h2 {
-    /*color : #094680;*/
-    color: #038252;
+    color: #111111;
 }
 
 .article-post h3 {
-    /*color : #2a5ba1;*/
-    color: #1a3b21;
+    color: #111111;
 }
 
 .article-post h5 {
-    color: #2e1b08;
+    color: #222222;
 }
 
 .article-post .highlighter-rouge {
-    color: #824b10;
+    color: #cb3048;
+    font-weight: 700;
 }
 
 .article-post img.shadow {
